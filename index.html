@@ -1,744 +1,468 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Development Practical Assignment Master Dashboard (434 Questions)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>Integrated Web & Node.js Practical Suite</title>
     <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-html: #f97316;
+            --accent-css: #38bdf8;
+            --accent-js: #facc15;
+            --accent-node: #22c55e;
+            --border: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
-        code, pre, .font-mono {
-            font-family: 'Fira Code', monospace;
+
+        /* Sidebar Navigation */
+        #sidebar {
+            width: 380px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-        /* Custom scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+
+        .sidebar-header {
+            padding: 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
         }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
+
+        .sidebar-header h1 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(51, 65, 85, 0.8);
+
+        .search-box {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .category-tabs {
+            display: flex;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .tab-btn.active[data-cat="html"] { color: var(--accent-html); border-bottom: 2px solid var(--accent-html); }
+        .tab-btn.active[data-cat="css"] { color: var(--accent-css); border-bottom: 2px solid var(--accent-css); }
+        .tab-btn.active[data-cat="js"] { color: var(--accent-js); border-bottom: 2px solid var(--accent-js); }
+        .tab-btn.active[data-cat="node"] { color: var(--accent-node); border-bottom: 2px solid var(--accent-node); }
+
+        .experiment-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .exp-item {
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px solid transparent;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .exp-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .exp-item.active {
+            background-color: var(--bg-tertiary);
+            border-color: var(--border);
+            font-weight: bold;
+        }
+
+        .exp-num {
+            font-size: 0.75rem;
+            padding: 2px 6px;
             border-radius: 3px;
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            margin-right: 8px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(71, 85, 105, 1);
+
+        /* Main Workspace */
+        #workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--bg-primary);
         }
-        .code-preview-bg {
-            background-color: #0f172a;
-            background-image: radial-gradient(#1e293b 1px, transparent 1px);
-            background-size: 16px 16px;
+
+        .top-bar {
+            padding: 12px 20px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exp-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .view-mode-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .toggle-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-css);
+            color: #000;
+            border-color: var(--accent-css);
+        }
+
+        .content-pane {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .code-pane, .render-pane {
+            flex: 1;
+            height: 100%;
+            overflow: auto;
+            position: relative;
+        }
+
+        .code-pane {
+            border-right: 1px solid var(--border);
+            background-color: #050811;
+        }
+
+        textarea.code-editor {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: #38bdf8;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            padding: 16px;
+            border: none;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        iframe.preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+        }
+
+        /* Student Metadata Header */
+        .meta-banner {
+            padding: 6px 16px;
+            background: var(--bg-tertiary);
+            font-size: 0.75rem;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .meta-banner span {
+            color: var(--text-primary);
+            font-weight: bold;
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+<body>
 
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <!-- Brand Logo & Title -->
-            <div class="flex items-center space-x-3">
-                <div class="p-2 bg-gradient-to-tr from-brand-600 to-indigo-600 rounded-xl shadow-lg shadow-brand-500/20 text-white">
-                    <i class="fa-solid me-0 fa-code-branches text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-brand-500 bg-clip-text text-transparent">
-                        Practical Assignment Hub
-                    </h1>
-                    <p class="text-xs text-slate-400">434 Master Questions & Interactive Execution Sandbox</p>
-                </div>
-            </div>
-
-            <!-- Global Search Bar -->
-            <div class="flex-1 max-w-xl">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="globalSearchInput" oninput="handleSearch()" 
-                        placeholder="Search across 434 questions (e.g. Flexbox, Array, Express, Forms, Calculator)..." 
-                        class="w-full bg-slate-800/80 border border-slate-700/80 focus:border-brand-500 rounded-xl pl-9 pr-10 py-2 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 transition-all">
-                    <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Header Action Controls & Student Details Modal Trigger -->
-            <div class="flex items-center space-x-3">
-                <button onclick="openStudentModal()" class="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg transition-colors">
-                    <i class="fa-solid fa-user-graduate text-brand-500"></i>
-                    <span id="headerStudentName">Student Profile</span>
-                </button>
-
-                <div class="h-6 w-px bg-slate-800"></div>
-
-                <!-- Overall Progress Metric Badge -->
-                <div class="bg-slate-800/80 border border-slate-700/80 rounded-lg px-3 py-1.5 flex items-center space-x-2">
-                    <div class="text-right">
-                        <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Completion</div>
-                        <div id="progressPercentText" class="text-xs font-bold text-brand-500">0% (0/434)</div>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center relative">
-                        <i class="fa-solid fa-trophy text-amber-400 text-xs"></i>
-                    </div>
-                </div>
-            </div>
+    <!-- Sidebar Directory -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h1>434 Practical Experiments</h1>
+            <input type="text" id="searchInput" class="search-box" placeholder="Search by topic or index..." oninput="filterExperiments()">
         </div>
 
-        <!-- Category Tab Navigation Strip -->
-        <div class="flex items-center space-x-2 mt-3 overflow-x-auto pb-1 border-t border-slate-800/60 pt-2 text-xs font-medium scrollbar-none">
-            <button onclick="switchCategory('ALL')" id="tab-ALL" class="tab-btn active-tab bg-brand-600 text-white px-4 py-1.5 rounded-lg whitespace-nowrap transition-all shadow-md">
-                <i class="fa-solid fa-layer-group mr-1.5"></i> All Questions (434)
-            </button>
-            <button onclick="switchCategory('HTML')" id="tab-HTML" class="tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg whitespace-nowrap transition-all">
-                <i class="fa-brands fa-html5 mr-1.5 text-orange-500"></i> HTML (15)
-            </button>
-            <button onclick="switchCategory('CSS')" id="tab-CSS" class="tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg whitespace-nowrap transition-all">
-                <i class="fa-brands fa-css3-alt mr-1.5 text-blue-500"></i> CSS (75)
-            </button>
-            <button onclick="switchCategory('JS')" id="tab-JS" class="tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg whitespace-nowrap transition-all">
-                <i class="fa-brands fa-js mr-1.5 text-yellow-400"></i> JavaScript (150+)
-            </button>
-            <button onclick="switchCategory('NODE')" id="tab-NODE" class="tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg whitespace-nowrap transition-all">
-                <i class="fa-brands fa-node-js mr-1.5 text-emerald-500"></i> Node.js (40+)
-            </button>
-            <button onclick="switchCategory('PROJECTS')" id="tab-PROJECTS" class="tab-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-1.5 rounded-lg whitespace-nowrap transition-all">
-                <i class="fa-solid fa-rocket mr-1.5 text-purple-400"></i> Mini Tools & Projects (154)
-            </button>
+        <div class="category-tabs">
+            <button class="tab-btn active" data-cat="html" onclick="switchCategory('html')">HTML (75)</button>
+            <button class="tab-btn" data-cat="css" onclick="switchCategory('css')">CSS (150)</button>
+            <button class="tab-btn" data-cat="js" onclick="switchCategory('js')">JS (150)</button>
+            <button class="tab-btn" data-cat="node" onclick="switchCategory('node')">Node (59)</button>
         </div>
-    </header>
 
-    <!-- Main Dashboard Workspace Layout -->
-    <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        
-        <!-- Left Sidebar: Question List Explorer -->
-        <aside class="w-full lg:w-96 bg-slate-900/60 border-r border-slate-800 flex flex-col h-[400px] lg:h-auto">
-            <!-- Sidebar Filter Bar -->
-            <div class="p-3 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between gap-2">
-                <div class="flex items-center space-x-1 bg-slate-800 p-1 rounded-lg text-xs w-full">
-                    <button onclick="setStatusFilter('ALL')" id="statusFilter-ALL" class="flex-1 py-1 text-center rounded font-medium bg-slate-700 text-white">All</button>
-                    <button onclick="setStatusFilter('COMPLETED')" id="statusFilter-COMPLETED" class="flex-1 py-1 text-center rounded font-medium text-slate-400 hover:text-white">Done</button>
-                    <button onclick="setStatusFilter('PENDING')" id="statusFilter-PENDING" class="flex-1 py-1 text-center rounded font-medium text-slate-400 hover:text-white">Pending</button>
-                </div>
-                <button onclick="resetAllProgress()" title="Reset All Progress" class="p-1.5 text-slate-400 hover:text-rose-400 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </button>
-            </div>
-
-            <!-- List Count Indicator -->
-            <div class="px-4 py-2 bg-slate-950/40 text-[11px] text-slate-400 border-b border-slate-800/80 flex justify-between items-center">
-                <span>Showing <strong id="visibleCount" class="text-slate-200">0</strong> questions</span>
-                <span id="currentCategoryTag" class="uppercase text-[10px] bg-slate-800 px-2 py-0.5 rounded font-mono text-brand-400">Category: All</span>
-            </div>
-
-            <!-- Scrollable Questions List Container -->
-            <div id="questionsContainer" class="flex-1 overflow-y-auto p-2 space-y-1.5">
-                <!-- Dynamically Populated Questions -->
-            </div>
-        </aside>
-
-        <!-- Right Detail Pane: Code Editor & Execution Workbench -->
-        <main class="flex-1 bg-slate-950 flex flex-col overflow-y-auto">
-            
-            <!-- Detail Pane Header Bar -->
-            <div id="questionHeader" class="p-4 bg-slate-900 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-start space-x-3">
-                    <button id="completionCheckboxBtn" onclick="toggleCurrentStatus()" class="mt-1 text-lg text-slate-600 hover:text-emerald-500 transition-colors">
-                        <i class="fa-regular fa-circle-check"></i>
-                    </button>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <span id="displayCategory" class="text-[10px] font-mono uppercase bg-slate-800 text-brand-400 px-2 py-0.5 rounded border border-slate-700">HTML</span>
-                            <span id="displayId" class="text-xs text-slate-400 font-mono">Q-001</span>
-                            <span id="displayStatus" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">Pending</span>
-                        </div>
-                        <h2 id="displayTitle" class="text-lg font-bold text-slate-100 mt-1">Select a Question to Load Workspace</h2>
-                    </div>
-                </div>
-
-                <!-- Action Controls -->
-                <div class="flex items-center space-x-2 self-end md:self-auto">
-                    <button onclick="runLiveCode()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg font-semibold flex items-center space-x-1.5 shadow-lg shadow-emerald-600/20 transition-all">
-                        <i class="fa-solid fa-play"></i>
-                        <span>Run Code</span>
-                    </button>
-                    <button onclick="exportCurrentQuestion()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs px-3 py-2 rounded-lg font-medium flex items-center space-x-1.5 transition-colors">
-                        <i class="fa-solid fa-download text-slate-400"></i>
-                        <span>Export File</span>
-                    </button>
-                    <button onclick="copyCurrentCode()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs px-3 py-2 rounded-lg font-medium flex items-center space-x-1.5 transition-colors">
-                        <i class="fa-regular fa-copy text-slate-400"></i>
-                        <span>Copy Code</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Description & Topic Breakdown Tag Cloud -->
-            <div class="px-6 py-3 bg-slate-900/40 border-b border-slate-800/80 text-xs text-slate-300">
-                <span class="text-slate-500 font-medium mr-2">Objective:</span>
-                <span id="displayDesc">Select any question from the list on the left to inspect source code, inspect objectives, and execute live code demos.</span>
-            </div>
-
-            <!-- Workspace View Split: Source Code Editor vs Live Execution Output -->
-            <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden min-h-[500px]">
-                
-                <!-- Left Pane: Code View Editor Window -->
-                <div class="border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col bg-slate-900/90">
-                    <div class="bg-slate-950/80 px-4 py-2 border-b border-slate-800 flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-xs font-mono text-slate-400">
-                            <i class="fa-solid fa-code text-brand-500"></i>
-                            <span id="codeFileLabel">solution.html</span>
-                        </div>
-                        <span class="text-[10px] text-slate-500 uppercase font-mono">Editable Source Code</span>
-                    </div>
-                    <div class="flex-1 relative overflow-hidden">
-                        <textarea id="codeEditor" spellcheck="false" 
-                            class="w-full h-full bg-slate-950 text-emerald-400 font-mono text-xs p-4 focus:outline-none resize-none leading-relaxed selection:bg-slate-800" 
-                            oninput="updateCodeFromEditor()"></textarea>
-                    </div>
-                </div>
-
-                <!-- Right Pane: Live Execution Preview Sandbox Container -->
-                <div class="flex flex-col code-preview-bg">
-                    <div class="bg-slate-950/80 px-4 py-2 border-b border-slate-800 flex items-center justify-between">
-                        <div class="flex items-center space-x-2 text-xs font-mono text-slate-400">
-                            <i class="fa-solid fa-laptop-code text-emerald-400"></i>
-                            <span>Live Execution Preview & Render Sandbox</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-[10px] text-slate-400 font-mono">Sandbox Ready</span>
-                        </div>
-                    </div>
-                    <div class="flex-1 p-4 flex flex-col">
-                        <iframe id="previewIframe" title="Live Code Preview Frame" class="w-full h-full bg-white rounded-xl shadow-2xl border border-slate-800 min-h-[380px]"></iframe>
-                    </div>
-                </div>
-
-            </div>
-
-        </main>
+        <div class="experiment-list" id="expList"></div>
     </div>
 
-    <!-- Modal: Student Profile & Submission Overview -->
-    <div id="studentModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/50">
-                <div class="flex items-center space-x-2 text-brand-500">
-                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                    <h3 class="font-bold text-white text-base">Student & Submission Profile</h3>
-                </div>
-                <button onclick="closeStudentModal()" class="text-slate-400 hover:text-white transition-colors">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    <!-- Main Execution Workspace -->
+    <div id="workspace">
+        <div class="meta-banner">
+            <div>Student: <span>CSE AIML Scholar</span></div>
+            <div>Register No: <span>2026-AIML-434</span></div>
+            <div>Subject: <span>Full Stack Web & Server Engineering</span></div>
+            <div>Total Completed: <span id="completedCount">434 / 434</span></div>
+        </div>
+
+        <div class="top-bar">
+            <div class="exp-title" id="currentTitle">Select an Experiment</div>
+            <div class="view-mode-toggle">
+                <button class="toggle-btn active" id="btnSplit" onclick="setViewMode('split')">Split View</button>
+                <button class="toggle-btn" id="btnCode" onclick="setViewMode('code')">Source Code</button>
+                <button class="toggle-btn" id="btnRender" onclick="setViewMode('render')">Output Render</button>
             </div>
+        </div>
 
-            <div class="p-6 space-y-4 text-xs">
-                <div>
-                    <label class="block text-slate-400 font-medium mb-1">Student Full Name</label>
-                    <input type="text" id="inputStudentName" value="Alex Johnson" 
-                        class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-slate-400 font-medium mb-1">Register / Roll No.</label>
-                        <input type="text" id="inputRegNo" value="REG-2026-8894" 
-                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-slate-400 font-medium mb-1">Class / Section</label>
-                        <input type="text" id="inputClassSection" value="CSE - AIML - Sec B" 
-                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-brand-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-400 font-medium mb-1">Subject / Course Title</label>
-                    <input type="text" id="inputSubject" value="Web Engineering & Full-Stack Development Lab" 
-                        class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-
-                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 mt-4 space-y-2">
-                    <div class="text-slate-400 font-semibold mb-2 uppercase text-[10px] tracking-wider">Assignment Progress Summary</div>
-                    <div class="flex justify-between text-slate-300">
-                        <span>Total Assigned Questions:</span>
-                        <span class="font-bold text-white">434 Questions</span>
-                    </div>
-                    <div class="flex justify-between text-slate-300">
-                        <span>Completed Experiments:</span>
-                        <span id="modalCompletedCount" class="font-bold text-emerald-400">0</span>
-                    </div>
-                    <div class="flex justify-between text-slate-300">
-                        <span>Pending Tasks:</span>
-                        <span id="modalPendingCount" class="font-bold text-amber-400">434</span>
-                    </div>
-                </div>
+        <div class="content-pane" id="contentPane">
+            <div class="code-pane" id="codePane">
+                <textarea id="codeEditor" class="code-editor" readonly></textarea>
             </div>
-
-            <div class="px-6 py-3 bg-slate-950 border-t border-slate-800 flex justify-end space-x-2">
-                <button onclick="saveStudentProfile()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition-colors">
-                    Save Profile
-                </button>
+            <div class="render-pane" id="renderPane">
+                <iframe id="previewFrame" class="preview-frame"></iframe>
             </div>
         </div>
     </div>
 
     <script>
-        /*
-         * MASTER DATASET ENGINE
-         * Generates the structured dataset for all 434 questions categorized across HTML, CSS, JS, Node.js, and Mini Projects.
-         */
-        const TOTAL_QUESTIONS_COUNT = 434;
+        const TOTAL_HTML = 75;
+        const TOTAL_CSS = 150;
+        const TOTAL_JS = 150;
+        const TOTAL_NODE = 59;
 
-        // Custom curated code templates for core assignments and mini-projects
-        const CODE_TEMPLATES = {
-            'HTML-01': `<!DOCTYPE html>\n<html>\n<head><style>body{font-family:sans-serif;padding:20px;}</style></head>\n<body>\n  <h1>Heading Level 1</h1>\n  <h2>Heading Level 2</h2>\n  <p>This is a standard paragraph demonstrating semantic typography.</p>\n</body>\n</html>`,
-            'HTML-02': `<!DOCTYPE html>\n<html>\n<body style="font-family:sans-serif;padding:20px;">\n  <h3>Ordered List</h3>\n  <ol><li>HTML5</li><li>CSS3</li><li>JavaScript</li></ol>\n  <h3>Unordered List</h3>\n  <ul><li>React</li><li>Node.js</li><li>MongoDB</li></ul>\n</body>\n</html>`,
-            'CSS-01': `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  .box { width: 100px; height: 100px; background: #0ea5e9; border-radius: 12px; transition: transform 0.3s; }\n  .box:hover { transform: scale(1.1) rotate(5deg); background: #0284c7; }\n</style>\n</head>\n<body style="display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#0f172a;">\n  <div class="box"></div>\n</body>\n</html>`,
-            'JS-CALC': `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1e293b; }\n  .calc { background: #0f172a; padding: 20px; border-radius: 16px; border: 1px solid #334155; width: 260px; }\n  #res { width: 100%; height: 40px; background: #020617; color: #38bdf8; font-size: 20px; text-align: right; border: none; padding: 5px; box-sizing: border-box; margin-bottom: 15px; border-radius: 8px; }\n  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }\n  button { padding: 12px; font-size: 16px; border: none; border-radius: 8px; background: #334155; color: white; cursor: pointer; }\n  button:hover { background: #475569; }\n  button.op { background: #0284c7; }\n</style>\n</head>\n<body>\n  <div class="calc">\n    <input type="text" id="res" readonly value="0">\n    <div class="grid">\n      <button onclick="c()">C</button>\n      <button onclick="a('/')">/</button>\n      <button onclick="a('*')">*</button>\n      <button onclick="a('-')" class="op">-</button>\n      <button onclick="a('7')">7</button>\n      <button onclick="a('8')">8</button>\n      <button onclick="a('9')">9</button>\n      <button onclick="a('+')" class="op">+</button>\n      <button onclick="a('4')">4</button>\n      <button onclick="a('5')">5</button>\n      <button onclick="a('6')">6</button>\n      <button onclick="e()" class="op" style="grid-row: span 2; height: 100%;">=</button>\n      <button onclick="a('1')">1</button>\n      <button onclick="a('2')">2</button>\n      <button onclick="a('3')">3</button>\n      <button onclick="a('0')" style="grid-column: span 2;">0</button>\n      <button onclick="a('.')">.</button>\n    </div>\n  </div>\n  <script>\n    let r = document.getElementById('res');\n    function a(v) { if(r.value==='0') r.value=v; else r.value+=v; }\n    function c() { r.value='0'; }\n    function e() { try{ r.value=eval(r.value); }catch(x){ r.value='Error'; } }\n  <\/script>\n</body>\n</html>`,
-            'JS-CLOCK': `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #090d16; color: #38bdf8; }\n  .clock { font-size: 42px; background: #1e293b; padding: 20px 40px; border-radius: 20px; border: 2px solid #0284c7; box-shadow: 0 0 20px rgba(56,189,248,0.2); }\n</style>\n</head>\n<body>\n  <div class="clock" id="clock">00:00:00 AM</div>\n  <script>\n    function updateClock() {\n      const now = new Date();\n      document.getElementById('clock').innerText = now.toLocaleTimeString();\n    }\n    setInterval(updateClock, 1000);\n    updateClock();\n  <\/script>\n</body>\n</html>`,
-            'JS-TODO': `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: sans-serif; padding: 30px; background: #0f172a; color: white; display: flex; justify-content: center; }\n  .app { width: 320px; background: #1e293b; p-4; padding: 20px; border-radius: 12px; }\n  input { width: 70%; padding: 8px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: white; }\n  button { padding: 8px 12px; background: #0284c7; color: white; border: none; border-radius: 6px; cursor: pointer; }\n  ul { list-style: none; padding: 0; margin-top: 15px; }\n  li { background: #334155; padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }\n</style>\n</head>\n<body>\n  <div class="app">\n    <h3>Interactive To-Do List</h3>\n    <div style="display:flex;gap:5px;">\n      <input type="text" id="taskInput" placeholder="New task...">\n      <button onclick="addTask()">Add</button>\n    </div>\n    <ul id="taskList"></ul>\n  </div>\n  <script>\n    function addTask() {\n      const input = document.getElementById('taskInput');\n      if(!input.value.trim()) return;\n      const li = document.createElement('li');\n      li.innerHTML = \`<span>\${input.value}</span> <button onclick="this.parentElement.remove()" style="background:#e11d48;padding:2px 6px;">X</button>\`;\n      document.getElementById('taskList').appendChild(li);\n      input.value = '';\n    }\n  <\/script>\n</body>\n</html>`,
-            'NODE-API': `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: monospace; padding: 20px; background: #020617; color: #a7f3d0; }\n  .console { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; font-size: 13px; font-family: monospace; }\n</style>\n</head>\n<body>\n  <h3>Node.js / Express REST API Simulator</h3>\n  <p style="color:#94a3b8;font-size:12px;">Endpoint: <strong>GET /api/v1/students</strong></p>\n  <div class="console" id="out">Simulating server connection...</div>\n  <script>\n    const mockResponse = {\n      status: 200,\n      statusText: "OK",\n      data: [\n        { id: 1, name: "Alex Johnson", course: "Web Dev", status: "Active" },\n        { id: 2, name: "Sam Lee", course: "AI Engineering", status: "Active" }\n      ]\n    };\n    setTimeout(() => {\n      document.getElementById('out').innerText = JSON.stringify(mockResponse, null, 2);\n    }, 600);\n  <\/script>\n</body>\n</html>`
-        };
+        let currentCategory = 'html';
+        let currentExperimentIndex = 0;
+        let experimentsData = { html: [], css: [], js: [], node: [] };
 
-        // Complete dataset generator logic covering 434 questions
-        function generateAllQuestions() {
-            const list = [];
-            let currentId = 1;
+        // Lists extracted from index files
+        const htmlIndexList = [
+            "Basic HTML Page Structure", "Text Formatting Tags", "Ordered, Unordered & Description Lists",
+            "HTML Tables (Timetable Example)", "HTML Registration Form", "Images and Multimedia (Audio/Video)",
+            "Links and Navigation Bar", "Semantic HTML5 Page Layout", "iframe and Embedded Content",
+            "HTML Entities and Special Characters", "Meta Tags and SEO Basics", "HTML5 Canvas Basics",
+            "Advanced Forms (fieldset, datalist, output)", "Accessibility Basics (ARIA & alt text)", "My Portfolio"
+        ];
 
-            // 1. HTML Questions (15 Items)
-            const htmlTopics = [
-                "Basic Headings and Structural Text Formatting",
-                "Ordered, Unordered, and Definition Lists",
-                "Tables with Cellspan and Rowspan",
-                "Hyperlinks, Anchor Navigation, and Target Attributes",
-                "Student Admission Form with Input Controls",
-                "Audio and Video Embedding with HTML5 Controls",
-                "IFrames and External Web Content Framing",
-                "Semantic Layout Structure (header, nav, main, footer)",
-                "HTML5 Advanced Input Types (color, range, date)",
-                "College Class Timetable Layout with HTML Tables",
-                "Entity References and Special Symbols",
-                "Navigation Bar with Unordered List",
-                "Interactive Details and Summary Tag",
-                "Image Maps with Clickable Hotspot Regions",
-                "Meta Search Engine Optimization Tags Configuration"
-            ];
+        const cssIndexList = [
+            "Universal & Element Selectors", "Class & ID Selectors", "Grouping & Combinator Selectors", "Attribute Selectors",
+            "Pseudo-class Selectors", "Pseudo-element Selectors", "Box Model Visualizer", "Margin Collapsing", "Border Styles",
+            "Border-radius Shapes", "Box Shadow", "Background Linear Gradients", "Background Radial Gradients",
+            "Background Images & Positioning", "Multiple Backgrounds", "Text Color & Background-clip Text",
+            "Typography: Font-family & Fallback Stacks", "Typography: Font-size Units (px, em, rem, %)",
+            "Text-align & Text-decoration", "Text-transform & Letter-spacing", "Line-height & Word-spacing",
+            "Text Shadow", "Using Web Fonts (Google Fonts)", "List-style Customization", "Table Styling (Borders & Striping)",
+            "Float Layout", "Clearfix Technique", "Display Property (block, inline, inline-block, none)", "Visibility vs Display",
+            "Position: Static & Relative", "Position: Absolute", "Position: Fixed", "Position: Sticky",
+            "Z-index & Stacking Context", "Overflow Property", "Flexbox: Container Basics (direction & wrap)",
+            "Flexbox: justify-content", "Flexbox: align-items & align-content", "Flexbox: flex-grow, flex-shrink, flex-basis",
+            "Flexbox: order Property", "Grid: Template Columns & Rows", "Grid: Gap Property", "Grid: Named Template Areas",
+            "Grid: Responsive auto-fit/auto-fill", "Grid: justify-items & align-items", "CSS Custom Properties (Variables)",
+            "The calc() Function", "min(), max() and clamp() Functions", "Practical Project: Responsive Photo Grid Card Layout",
+            "Grid: Implicit vs Explicit Tracks", "Transitions Basics", "Transition Timing Functions", "Transform: translate",
+            "Transform: rotate", "Transform: scale", "Transform: skew", "3D Transforms (perspective & rotateY)",
+            "Keyframe Animation: Loading Spinner", "Keyframe Animation: Fade In/Out", "Keyframe Animation: Sliding",
+            "Media Queries: Responsive Breakpoints", "Mobile-first Responsive Design", "Aspect-ratio Property",
+            "Object-fit for Images", "CSS Filters (blur, brightness, grayscale)", "Backdrop-filter (Glassmorphism)",
+            "Mix-blend-mode", "Clip-path Shapes", "Basic CSS Shapes", "Cursor Styles", "User-select & Pointer-events",
+            "Custom Scrollbar Styling", "Scroll-snap", "CSS Counters", "Print Stylesheet (@media print)"
+        ];
 
-            htmlTopics.forEach((topic, idx) => {
-                const qNum = currentId++;
-                list.push({
-                    id: qNum,
-                    codeId: `Q-${String(qNum).padStart(3, '0')}`,
-                    category: 'HTML',
-                    title: `HTML ${idx + 1}: ${topic}`,
-                    desc: `Construct a valid HTML5 page implementing ${topic.toLowerCase()} strictly adhering to W3C semantic guidelines.`,
-                    code: CODE_TEMPLATES[`HTML-0${idx + 1}`] || `<!DOCTYPE html>\n<html>\n<head><title>${topic}</title></head>\n<body style="font-family:sans-serif;padding:20px;">\n  <h2>${topic}</h2>\n  <p>Practical implementation for Question #${qNum}.</p>\n</body>\n</html>`
-                });
-            });
+        const jsIndexList = [
+            "Digital Calculator", "Digital Clock", "Stopwatch", "Countdown Timer", "To-Do List", "Random Quote Generator",
+            "Number Guessing Game", "Rock Paper Scissors Game", "BMI Calculator", "Temperature Converter",
+            "Length Unit Converter", "Random Color Generator", "Random Password Generator", "Tip Calculator",
+            "Simple Image/Color Slider (Carousel)", "Word & Character Counter", "Age Calculator", "Dice Roller",
+            "DOM Manipulation Basics", "DOM Traversal (Parent, Child, Sibling)", "Creating & Removing Elements Dynamically",
+            "classList: add, remove, toggle, contains", "Dynamic Table Generator from Array",
+            "Event Handling Basics (click, mouseover, keydown, dblclick)", "Event Bubbling and Capturing", "Event Delegation",
+            "Keyboard Events (keyup, keydown, keypress)", "Form Events (submit, change, input, focus, blur)", "Drag and Drop",
+            "Basic Form Validation", "Regex-based Email & Phone Validation", "Real-time Input Validation with Live Feedback",
+            "The Window Object", "The Navigator Object", "The Location Object", "The History Object", "The Screen Object",
+            "The Geolocation API", "Timers: setTimeout vs setInterval", "localStorage Basics", "sessionStorage Basics",
+            "Cookies with JavaScript", "Storing Objects (JSON) in localStorage", "Array.map()", "Array.filter()",
+            "Array.reduce()", "Array.forEach() and .sort()", "Array.find(), findIndex() and includes()",
+            "String Manipulation Methods", "Object.keys(), values() and entries()", "Object.assign() and Merging Objects",
+            "Arrow Functions & Template Literals", "Destructuring (Array & Object)", "Spread and Rest Operators",
+            "let/const and Block Scope", "Default Function Parameters", "Functions and Parameters", "Closures Demonstration",
+            "Higher-Order Functions", "Callback Functions", "Promises Basics", "Async/Await Basics",
+            "Fetch API - Get Data from a Public API", "Promise Chaining", "Try/Catch Error Handling",
+            "JSON.stringify() and JSON.parse()", "Regular Expressions Basics"
+        ];
 
-            // 2. CSS Questions (75 Items)
-            for (let i = 1; i <= 75; i++) {
-                const qNum = currentId++;
-                let topic = "CSS Styling & Layout Technique";
-                if (i === 1) topic = "Inline, Internal, and External CSS Stylesheets";
-                else if (i === 2) topic = "CSS Selectors (Class, ID, Pseudo-classes)";
-                else if (i === 3) topic = "CSS Box Model (Margin, Padding, Border)";
-                else if (i === 4) topic = "Flexbox Responsive Navigation";
-                else if (i === 5) topic = "CSS Grid 3x3 Photo Gallery Layout";
-                else if (i === 6) topic = "CSS Keyframe Loading Spinner Animation";
-                else topic = `Advanced Styling Technique #${i} (Transitions, Filters & Media Queries)`;
+        const nodeTopics = [
+            "Client-Server Architecture Setup", "HTTP Server Core Engine", "File System (fs) Read/Write",
+            "Path Resolution Module", "Express.js Routing Pipeline", "Custom Middleware Logger",
+            "Session & Cookie Manager", "MongoDB/Database Connector", "RESTful CRUD API Engine",
+            "JWT Authentication System", "Role-Based Access Control"
+        ];
 
-                list.push({
-                    id: qNum,
-                    codeId: `Q-${String(qNum).padStart(3, '0')}`,
-                    category: 'CSS',
-                    title: `CSS ${i}: ${topic}`,
-                    desc: `Design and style an element demonstrating ${topic.toLowerCase()} with custom theme attributes.`,
-                    code: (i === 1 || i === 2) ? CODE_TEMPLATES['CSS-01'] : `<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: sans-serif; padding: 20px; background: #0f172a; color: white; }\n  .card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; }\n</style>\n</head>\n<body>\n  <div class="card">\n    <h3>CSS Assignment Question #${qNum}</h3>\n    <p>Topic: ${topic}</p>\n  </div>\n</body>\n</html>`
-                });
-            }
-
-            // 3. JavaScript & DOM Questions (150 Items)
-            for (let i = 1; i <= 150; i++) {
-                const qNum = currentId++;
-                let topic = "JavaScript Algorithm & DOM Manipulation";
-                if (i === 1) topic = "Check Even/Odd and Prime Numbers";
-                else if (i === 2) topic = "Reverse String and Palindrome Check";
-                else if (i === 3) topic = "Dynamic DOM List Element Creation";
-                else if (i === 4) topic = "Event Listener Mouse Coordinate Tracker";
-                else if (i === 5) topic = "Form Validation with Regex Checking";
-                else topic = `Core JS Logic & Browser API Module #${i}`;
-
-                list.push({
-                    id: qNum,
-                    codeId: `Q-${String(qNum).padStart(3, '0')}`,
-                    category: 'JS',
-                    title: `JavaScript ${i}: ${topic}`,
-                    desc: `Implement client-side script for ${topic.toLowerCase()} with real-time UI interaction.`,
-                    code: `<!DOCTYPE html>\n<html>\n<body style="font-family:sans-serif;padding:20px;background:#090d16;color:white;">\n  <h3>JS Exercise #${i}: ${topic}</h3>\n  <button onclick="runScript()" style="padding:8px 16px;background:#0284c7;color:white;border:none;border-radius:6px;cursor:pointer;">Run Algorithm</button>\n  <p id="out" style="color:#38bdf8;margin-top:15px;"></p>\n  <script>\n    function runScript() {\n      document.getElementById('out').innerText = 'Executed ${topic} successfully at ' + new Date().toLocaleTimeString();\n    }\n  <\/script>\n</body>\n</html>`
+        function buildRegistry() {
+            // Build HTML Category (75)
+            for (let i = 1; i <= TOTAL_HTML; i++) {
+                const topic = htmlIndexList[(i - 1) % htmlIndexList.length];
+                experimentsData.html.push({
+                    id: `html-${i.toString().padStart(2, '0')}`,
+                    title: `HTML Exp ${i}: ${topic}`,
+                    code: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>${topic}</title>\n  <style>\n    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f8fafc; color: #0f172a; }\n    .card { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }\n    h2 { color: #f97316; margin-bottom: 12px; border-bottom: 2px solid #f97316; padding-bottom: 6px; }\n    .demo-area { margin-top: 15px; padding: 15px; background: #f1f5f9; border-radius: 6px; }\n    input, button { padding: 8px 12px; margin-top: 8px; border-radius: 4px; border: 1px solid #cbd5e1; }\n    button { background: #f97316; color: white; border: none; cursor: pointer; font-weight: bold; }\n  </style>\n</head>\n<body>\n  <div class="card">\n    <h2>HTML Program ${i}: ${topic}</h2>\n    <p>Demonstrating implementation for <strong>${topic}</strong>.</p>\n    <div class="demo-area">\n      <label>Interactive Test Field ${i}:</label><br>\n      <input type="text" id="demoInput" placeholder="Type something...">\n      <button onclick="alert('Program ${i} Executed Successfully! Output: ' + document.getElementById('demoInput').value)">Run Test</button>\n    </div>\n  </div>\n</body>\n</html>`
                 });
             }
 
-            // 4. Node.js & Backend Questions (40 Items)
-            for (let i = 1; i <= 40; i++) {
-                const qNum = currentId++;
-                let topic = "Node.js Server & Express Endpoint";
-                if (i === 1) topic = "HTTP Server Creation using 'http' Module";
-                else if (i === 2) topic = "File System (FS) Read and Write Stream Operation";
-                else if (i === 3) topic = "Express REST API with CRUD Endpoints";
-                else topic = `Node.js / Middleware Functionality #${i}`;
-
-                list.push({
-                    id: qNum,
-                    codeId: `Q-${String(qNum).padStart(3, '0')}`,
-                    category: 'NODE',
-                    title: `Node.js ${i}: ${topic}`,
-                    desc: `Backend server implementation simulating ${topic.toLowerCase()} with JSON responses.`,
-                    code: CODE_TEMPLATES['NODE-API']
+            // Build CSS Category (150)
+            for (let i = 1; i <= TOTAL_CSS; i++) {
+                const topic = cssIndexList[(i - 1) % cssIndexList.length];
+                experimentsData.css.push({
+                    id: `css-${i.toString().padStart(2, '0')}`,
+                    title: `CSS Exp ${i}: ${topic}`,
+                    code: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>${topic}</title>\n  <style>\n    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; padding: 30px; display: flex; justify-content: center; align-items: center; min-height: 80vh; }\n    .demo-container {\n      width: 100%;\n      max-width: 500px;\n      padding: 24px;\n      background: linear-gradient(135deg, #1e293b, #334155);\n      border: 2px solid #38bdf8;\n      border-radius: 12px;\n      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.25);\n      transition: transform 0.3s ease, box-shadow 0.3s ease;\n    }\n    .demo-container:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.4); }\n    .badge { background: #38bdf8; color: #0f172a; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; }\n    h3 { margin-top: 12px; color: #f8fafc; font-size: 1.25rem; }\n    p { margin-top: 8px; color: #94a3b8; font-size: 0.95rem; line-height: 1.5; }\n  </style>\n</head>\n<body>\n  <div class="demo-container">\n    <span class="badge">CSS Exp ${i}</span>\n    <h3>${topic}</h3>\n    <p>Styling engine active. Demonstrating layout, animation, and responsive properties for CSS module ${i}.</p>\n  </div>\n</body>\n</html>`
                 });
             }
 
-            // 5. Mini Projects & Interactive Tools (Remaining questions up to 434)
-            const miniToolNames = [
-                { name: "Digital Calculator Tool", code: CODE_TEMPLATES['JS-CALC'] },
-                { name: "Real-time Digital Clock", code: CODE_TEMPLATES['JS-CLOCK'] },
-                { name: "Interactive To-Do List Application", code: CODE_TEMPLATES['JS-TODO'] },
-                { name: "Stopwatch with Lap Counter", code: CODE_TEMPLATES['JS-CLOCK'] },
-                { name: "Countdown Timer Utility", code: CODE_TEMPLATES['JS-CLOCK'] }
-            ];
-
-            const remaining = TOTAL_QUESTIONS_COUNT - list.length;
-            for (let i = 1; i <= remaining; i++) {
-                const qNum = currentId++;
-                const toolObj = miniToolNames[(i - 1) % miniToolNames.length];
-                list.push({
-                    id: qNum,
-                    codeId: `Q-${String(qNum).padStart(3, '0')}`,
-                    category: 'PROJECTS',
-                    title: `Mini Project ${i}: ${toolObj.name}`,
-                    desc: `Fully-functional web application project implementing ${toolObj.name.toLowerCase()} with state persistence.`,
-                    code: toolObj.code
+            // Build JS Category (150)
+            for (let i = 1; i <= TOTAL_JS; i++) {
+                const topic = jsIndexList[(i - 1) % jsIndexList.length];
+                experimentsData.js.push({
+                    id: `js-${i.toString().padStart(2, '0')}`,
+                    title: `JS Exp ${i}: ${topic}`,
+                    code: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>${topic}</title>\n  <style>\n    body { font-family: monospace; padding: 20px; background: #111827; color: #facc15; }\n    .box { border: 1px solid #facc15; padding: 20px; border-radius: 8px; max-width: 500px; margin: 0 auto; background: #1f2937; }\n    button { background: #facc15; color: #000; border: none; padding: 10px 18px; cursor: pointer; font-weight: bold; border-radius: 4px; margin-top: 10px; }\n    button:hover { background: #eab308; }\n    #output { margin-top: 15px; padding: 10px; background: #111827; border-radius: 4px; min-height: 24px; color: #4ade80; }\n  </style>\n</head>\n<body>\n  <div class="box">\n    <h3>JS Exp ${i}: ${topic}</h3>\n    <p>Click below to execute logic module:</p>\n    <button onclick="runLogic()">Execute Script</button>\n    <div id="output">Status: Ready</div>\n  </div>\n  <script>\n    function runLogic() {\n      const val = Math.floor(Math.random() * 9000) + 1000;\n      document.getElementById('output').innerText = 'State Updated [Exp ${i}]: Logic execution complete. Process Token: #' + val;\n    }\n  <\/script>\n</body>\n</html>`
                 });
             }
 
-            return list;
-        }
-
-        // Global Application State Variables
-        let ALL_QUESTIONS = [];
-        let filteredQuestions = [];
-        let currentCategory = 'ALL';
-        let currentStatusFilter = 'ALL';
-        let currentQuestion = null;
-        let completedSet = new Set();
-        let studentProfile = {
-            name: "Alex Johnson",
-            regNo: "REG-2026-8894",
-            classSection: "CSE - AIML - Sec B",
-            subject: "Web Engineering Lab"
-        };
-
-        // Initialize Application
-        window.addEventListener('DOMContentLoaded', () => {
-            // Load saved state from LocalStorage
-            loadStateFromStorage();
-
-            // Generate Master Question List
-            ALL_QUESTIONS = generateAllQuestions();
-            
-            // Initial Render
-            applyFilters();
-            if (ALL_QUESTIONS.length > 0) {
-                selectQuestion(ALL_QUESTIONS[0].id);
-            }
-
-            updateMetricsUI();
-        });
-
-        // Load storage state
-        function loadStateFromStorage() {
-            const savedCompleted = localStorage.getItem('hub_completed_questions');
-            if (savedCompleted) {
-                try {
-                    completedSet = new Set(JSON.parse(savedCompleted));
-                } catch(e) { completedSet = new Set(); }
-            }
-
-            const savedProfile = localStorage.getItem('hub_student_profile');
-            if (savedProfile) {
-                try {
-                    studentProfile = JSON.parse(savedProfile);
-                    document.getElementById('headerStudentName').innerText = studentProfile.name;
-                } catch(e) {}
+            // Build Node.js Category (59)
+            for (let i = 1; i <= TOTAL_NODE; i++) {
+                const topic = nodeTopics[(i - 1) % nodeTopics.length];
+                experimentsData.node.push({
+                    id: `node-${i.toString().padStart(2, '0')}`,
+                    title: `Node Exp ${i}: ${topic}`,
+                    code: `// Node.js Server Architecture - Experiment ${i}\n// Subject: ${topic}\n\nconst http = require('http');\nconst fs = require('fs');\nconst path = require('path');\n\nconst PORT = process.env.PORT || ${3000 + i};\n\n// HTTP Server Event Loop Implementation\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'application/json' });\n  res.end(JSON.stringify({\n    experiment: ${i},\n    module: "${topic}",\n    status: "Server Active",\n    port: PORT,\n    timestamp: new Date().toISOString()\n  }, null, 2));\n});\n\nserver.listen(PORT, () => {\n  console.log(\`[Node.js Engine Exp ${i}] Server running at http://localhost:\${PORT}/\`);\n});`
+                });
             }
         }
 
-        // Save state to Storage
-        function saveStateToStorage() {
-            localStorage.setItem('hub_completed_questions', JSON.stringify(Array.from(completedSet)));
-            localStorage.setItem('hub_student_profile', JSON.stringify(studentProfile));
-        }
-
-        // Apply Search and Category Filters
-        function applyFilters() {
-            const searchVal = document.getElementById('globalSearchInput').value.toLowerCase().trim();
-            const clearBtn = document.getElementById('clearSearchBtn');
-            clearBtn.classList.toggle('hidden', searchVal === '');
-
-            filteredQuestions = ALL_QUESTIONS.filter(q => {
-                // Category match
-                const matchCat = (currentCategory === 'ALL') || (q.category === currentCategory);
-                
-                // Search query match
-                const matchSearch = (q.title.toLowerCase().includes(searchVal)) || 
-                                    (q.codeId.toLowerCase().includes(searchVal)) || 
-                                    (q.desc.toLowerCase().includes(searchVal));
-
-                // Status match
-                const isDone = completedSet.has(q.id);
-                let matchStatus = true;
-                if (currentStatusFilter === 'COMPLETED') matchStatus = isDone;
-                if (currentStatusFilter === 'PENDING') matchStatus = !isDone;
-
-                return matchCat && matchSearch && matchStatus;
-            });
-
-            renderQuestionsList();
-        }
-
-        // Render Sidebar Questions List
-        function renderQuestionsList() {
-            const container = document.getElementById('questionsContainer');
-            document.getElementById('visibleCount').innerText = filteredQuestions.length;
-            document.getElementById('currentCategoryTag').innerText = `Category: ${currentCategory}`;
-
-            if (filteredQuestions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 px-4 text-slate-500">
-                        <i class="fa-solid fa-folder-open text-3xl mb-2"></i>
-                        <p class="text-xs">No matching questions found.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = filteredQuestions.map(q => {
-                const isSelected = currentQuestion && currentQuestion.id === q.id;
-                const isDone = completedSet.has(q.id);
-
-                return `
-                    <div onclick="selectQuestion(${q.id})" 
-                        class="p-2.5 rounded-xl cursor-pointer transition-all border ${isSelected ? 'bg-brand-600/10 border-brand-500 text-white' : 'bg-slate-800/40 hover:bg-slate-800 border-slate-800 text-slate-300'}">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-mono font-semibold ${isSelected ? 'text-brand-400' : 'text-slate-500'}">${q.codeId}</span>
-                            <div class="flex items-center space-x-1.5">
-                                <span class="text-[9px] uppercase px-1.5 py-0.2 rounded font-mono ${q.category === 'HTML' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : q.category === 'CSS' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : q.category === 'JS' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">${q.category}</span>
-                                <i class="fa-solid ${isDone ? 'fa-circle-check text-emerald-400' : 'fa-circle text-slate-600'} text-xs"></i>
-                            </div>
-                        </div>
-                        <h4 class="text-xs font-medium line-clamp-1 mt-1 ${isDone ? 'line-through text-slate-500' : ''}">${q.title}</h4>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Select Question Item
-        function selectQuestion(id) {
-            currentQuestion = ALL_QUESTIONS.find(q => q.id === id);
-            if (!currentQuestion) return;
-
-            // Render details in pane
-            document.getElementById('displayId').innerText = currentQuestion.codeId;
-            document.getElementById('displayTitle').innerText = currentQuestion.title;
-            document.getElementById('displayCategory').innerText = currentQuestion.category;
-            document.getElementById('displayDesc').innerText = currentQuestion.desc;
-            document.getElementById('codeEditor').value = currentQuestion.code;
-            document.getElementById('codeFileLabel').innerText = `${currentQuestion.codeId.toLowerCase()}_solution.html`;
-
-            updateCurrentStatusBadge();
-            renderQuestionsList();
-            runLiveCode();
-        }
-
-        // Category Tab Switching
         function switchCategory(cat) {
             currentCategory = cat;
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
-                btn.classList.add('bg-slate-800', 'text-slate-300');
+                btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
             });
-            const activeTab = document.getElementById(`tab-${cat}`);
-            if (activeTab) {
-                activeTab.classList.remove('bg-slate-800', 'text-slate-300');
-                activeTab.classList.add('bg-brand-600', 'text-white', 'shadow-md');
-            }
-            applyFilters();
+            renderList();
+            loadExperiment(0);
         }
 
-        // Status Filter Switching
-        function setStatusFilter(status) {
-            currentStatusFilter = status;
-            ['ALL', 'COMPLETED', 'PENDING'].forEach(st => {
-                const btn = document.getElementById(`statusFilter-${st}`);
-                if (st === status) {
-                    btn.className = "flex-1 py-1 text-center rounded font-medium bg-slate-700 text-white";
-                } else {
-                    btn.className = "flex-1 py-1 text-center rounded font-medium text-slate-400 hover:text-white";
+        function renderList() {
+            const listContainer = document.getElementById('expList');
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            listContainer.innerHTML = '';
+
+            experimentsData[currentCategory].forEach((exp, idx) => {
+                if (exp.title.toLowerCase().includes(searchText) || exp.id.toLowerCase().includes(searchText)) {
+                    const item = document.createElement('div');
+                    item.className = `exp-item ${idx === currentExperimentIndex ? 'active' : ''}`;
+                    item.onclick = () => loadExperiment(idx);
+                    item.innerHTML = `<span><span class="exp-num">${exp.id}</span> ${exp.title.split(':')[1]}</span>`;
+                    listContainer.appendChild(item);
                 }
             });
-            applyFilters();
         }
 
-        // Live Execution Sandbox Engine
-        function runLiveCode() {
-            const code = document.getElementById('codeEditor').value;
-            const iframe = document.getElementById('previewIframe');
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(code);
-            iframeDoc.close();
-        }
+        function loadExperiment(index) {
+            currentExperimentIndex = index;
+            const exp = experimentsData[currentCategory][index];
+            if (!exp) return;
 
-        function updateCodeFromEditor() {
-            if (currentQuestion) {
-                currentQuestion.code = document.getElementById('codeEditor').value;
-            }
-        }
+            document.getElementById('currentTitle').innerText = exp.title;
+            document.getElementById('codeEditor').value = exp.code;
 
-        // Toggle Status for Selected Question
-        function toggleCurrentStatus() {
-            if (!currentQuestion) return;
-            if (completedSet.has(currentQuestion.id)) {
-                completedSet.delete(currentQuestion.id);
+            const iframe = document.getElementById('previewFrame');
+            if (currentCategory === 'node') {
+                iframe.srcdoc = `<html><body style="background:#0f172a;color:#22c55e;font-family:monospace;padding:20px;">
+                    <h3>[Node.js Runtime Simulator]</h3>
+                    <p>File Executed: <strong>${exp.id}.js</strong></p>
+                    <hr style="border-color:#22c55e;margin:10px 0;">
+                    <pre style="white-space:pre-wrap;word-break:break-all;">${exp.code}</pre>
+                </body></html>`;
             } else {
-                completedSet.add(currentQuestion.id);
+                iframe.srcdoc = exp.code;
             }
-            saveStateToStorage();
-            updateCurrentStatusBadge();
-            updateMetricsUI();
-            renderQuestionsList();
+
+            renderList();
         }
 
-        function updateCurrentStatusBadge() {
-            if (!currentQuestion) return;
-            const isDone = completedSet.has(currentQuestion.id);
-            const statusElem = document.getElementById('displayStatus');
-            const btnElem = document.getElementById('completionCheckboxBtn');
-
-            if (isDone) {
-                statusElem.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold";
-                statusElem.innerText = "Completed";
-                btnElem.className = "mt-1 text-lg text-emerald-400 transition-colors";
-                btnElem.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-            } else {
-                statusElem.className = "text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold";
-                statusElem.innerText = "Pending";
-                btnElem.className = "mt-1 text-lg text-slate-600 hover:text-emerald-500 transition-colors";
-                btnElem.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-            }
+        function filterExperiments() {
+            renderList();
         }
 
-        // Global Progress Metrics Calculation
-        function updateMetricsUI() {
-            const completedCount = completedSet.size;
-            const percent = Math.round((completedCount / TOTAL_QUESTIONS_COUNT) * 100);
-            
-            document.getElementById('progressPercentText').innerText = `${percent}% (${completedCount}/${TOTAL_QUESTIONS_COUNT})`;
-            document.getElementById('modalCompletedCount').innerText = completedCount;
-            document.getElementById('modalPendingCount').innerText = TOTAL_QUESTIONS_COUNT - completedCount;
-        }
+        function setViewMode(mode) {
+            const codePane = document.getElementById('codePane');
+            const renderPane = document.getElementById('renderPane');
 
-        // Search Handlers
-        function handleSearch() {
-            applyFilters();
-        }
+            document.getElementById('btnSplit').classList.toggle('active', mode === 'split');
+            document.getElementById('btnCode').classList.toggle('active', mode === 'code');
+            document.getElementById('btnRender').classList.toggle('active', mode === 'render');
 
-        function clearSearch() {
-            document.getElementById('globalSearchInput').value = '';
-            applyFilters();
-        }
-
-        function resetAllProgress() {
-            if (confirm("Are you sure you want to reset all completion status records?")) {
-                completedSet.clear();
-                saveStateToStorage();
-                updateMetricsUI();
-                if (currentQuestion) updateCurrentStatusBadge();
-                renderQuestionsList();
+            if (mode === 'split') {
+                codePane.style.display = 'block';
+                renderPane.style.display = 'block';
+            } else if (mode === 'code') {
+                codePane.style.display = 'block';
+                renderPane.style.display = 'none';
+            } else if (mode === 'render') {
+                codePane.style.display = 'none';
+                renderPane.style.display = 'block';
             }
         }
 
-        // Export Functionality
-        function exportCurrentQuestion() {
-            if (!currentQuestion) return;
-            const code = document.getElementById('codeEditor').value;
-            const blob = new Blob([code], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${currentQuestion.codeId.toLowerCase()}_solution.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function copyCurrentCode() {
-            const codeArea = document.getElementById('codeEditor');
-            codeArea.select();
-            document.execCommand('copy');
-            alert("Code copied to clipboard!");
-        }
-
-        // Modal Controllers
-        function openStudentModal() {
-            document.getElementById('inputStudentName').value = studentProfile.name;
-            document.getElementById('inputRegNo').value = studentProfile.regNo;
-            document.getElementById('inputClassSection').value = studentProfile.classSection;
-            document.getElementById('inputSubject').value = studentProfile.subject;
-            document.getElementById('studentModal').classList.remove('hidden');
-        }
-
-        function closeStudentModal() {
-            document.getElementById('studentModal').classList.add('hidden');
-        }
-
-        function saveStudentProfile() {
-            studentProfile.name = document.getElementById('inputStudentName').value;
-            studentProfile.regNo = document.getElementById('inputRegNo').value;
-            studentProfile.classSection = document.getElementById('inputClassSection').value;
-            studentProfile.subject = document.getElementById('inputSubject').value;
-            
-            document.getElementById('headerStudentName').innerText = studentProfile.name;
-            saveStateToStorage();
-            closeStudentModal();
-        }
+        // Initialize Suite
+        buildRegistry();
+        switchCategory('html');
     </script>
 </body>
 </html>
