@@ -1,721 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="HTML, CSS and JavaScript Practical Programs">
-<title>HTML CSS JavaScript Practical Lab</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development & Node.js Practical Lab Suite</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --sidebar-bg: #1e293b;
+            --card-bg: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --border: #475569;
+            --code-bg: #090d16;
+        }
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0b1220;--panel:#111c2f;--panel2:#17243a;--text:#f8fafc;
-  --muted:#9fb0c5;--border:#2b3a52;--html:#f97316;--css:#38bdf8;--js:#facc15;
-  --accent:#8b5cf6;
-}
-body{font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-header{padding:35px 20px;text-align:center;background:linear-gradient(135deg,#172554,#4c1d95);border-bottom:1px solid var(--border)}
-header h1{font-size:clamp(1.8rem,5vw,3.2rem);margin-bottom:8px}
-header p{color:#dbeafe;font-size:1.05rem}
-.container{width:min(1250px,94%);margin:25px auto}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
-.stat{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
-.stat b{display:block;font-size:2rem}
-.stat span{color:var(--muted)}
-.controls{position:sticky;top:0;z-index:10;background:rgba(11,18,32,.94);backdrop-filter:blur(12px);padding:12px 0}
-.search{width:100%;padding:14px 16px;background:var(--panel);color:white;border:1px solid var(--border);border-radius:10px;font-size:16px;outline:none}
-.tabs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.tab{flex:1;min-width:130px;padding:12px;border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:9px;cursor:pointer;font-weight:700}
-.tab.active{color:#fff;background:var(--accent);border-color:var(--accent)}
-.section{margin-top:25px}
-.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.section-title h2{font-size:1.4rem}
-.badge{padding:5px 10px;border-radius:999px;font-size:.8rem;background:var(--panel2);color:var(--muted)}
-.programs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:17px;transition:.2s;cursor:pointer}
-.card:hover{transform:translateY(-3px);border-color:var(--accent)}
-.card-number{font-size:.78rem;color:var(--muted);margin-bottom:7px}
-.card h3{font-size:1rem;line-height:1.45}
-.card button{margin-top:12px;background:var(--accent);color:white;border:0;border-radius:7px;padding:8px 12px;cursor:pointer;font-weight:700}
-.empty{padding:35px;text-align:center;color:var(--muted);background:var(--panel);border-radius:12px}
-footer{margin-top:40px;padding:30px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-/* Demo modal */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
-.modal.show{display:flex}
-.modal-box{width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;color:#111827;border-radius:15px}
-.modal-head{padding:18px 22px;background:#111827;color:white;display:flex;justify-content:space-between;gap:15px;align-items:center}
-.close{background:#ef4444;color:white;border:0;border-radius:7px;padding:8px 12px;cursor:pointer}
-.modal-body{padding:25px}
-.demo{border:1px solid #d1d5db;border-radius:12px;padding:20px;margin-top:15px;background:#f8fafc}
-.demo input,.demo select,.demo textarea{padding:10px;border:1px solid #cbd5e1;border-radius:7px;margin:5px 0;max-width:100%}
-.demo button{padding:9px 13px;border:0;border-radius:7px;background:#2563eb;color:white;cursor:pointer;margin:4px}
-.result{margin-top:12px;padding:10px;background:#e2e8f0;border-radius:7px;min-height:20px}
-.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.demo-box{padding:20px;border-radius:10px;background:#dbeafe;border:2px solid #2563eb}
-pre{background:#0f172a;color:#93c5fd;padding:15px;border-radius:9px;overflow:auto}
+        /* Sidebar Styling */
+        #sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
 
-.output-title{font-size:1.05rem;font-weight:800;margin:18px 0 8px;color:#111827}
-.code-title{font-size:1.05rem;font-weight:800;margin:20px 0 8px;color:#111827}
-.code-block{position:relative}
-.code-block pre{margin:0;max-height:360px;font-size:13px;line-height:1.5;white-space:pre-wrap}
-.copy-code{margin-top:8px;background:#7c3aed!important}
-.portfolio{font-family:Segoe UI,Arial,sans-serif;background:#fff;color:#172033;border-radius:12px;overflow:hidden}
-.portfolio-hero{padding:34px 25px;text-align:center;background:linear-gradient(135deg,#172554,#7c3aed);color:white}
-.portfolio-hero h1{font-size:2.2rem;margin-bottom:8px}
-.portfolio-hero p{margin:6px 0;color:#e9d5ff}
-.portfolio-nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:12px;background:#111827}
-.portfolio-nav a{color:white;text-decoration:none}
-.portfolio-section{padding:24px}
-.portfolio-section h2{color:#4c1d95;margin-bottom:10px}
-.skill-list{display:flex;flex-wrap:wrap;gap:8px}
-.skill-list span{padding:7px 11px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-weight:700}
-.project-card{border:1px solid #d1d5db;border-radius:10px;padding:14px;margin-top:10px;background:#f8fafc}
-.portfolio-footer{text-align:center;padding:18px;background:#111827;color:#cbd5e1}
-@media(max-width:700px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .demo-grid{grid-template-columns:1fr}
-}
-</style>
-</head>
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
 
-<body>
-<header>
-  <h1>HTML • CSS • JavaScript Practical Lab</h1>
-  <p>All programs in one GitHub-ready HTML file</p>
-</header>
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
 
-<div class="container">
-  <div class="stats">
-    <div class="stat"><b>15</b><span>HTML Programs</span></div>
-    <div class="stat"><b>75</b><span>CSS Programs</span></div>
-    <div class="stat"><b>67</b><span>JavaScript Programs</span></div>
-    <div class="stat"><b>157</b><span>Total</span></div>
-  </div>
+        .search-box {
+            padding: 10px 20px;
+        }
 
-  <div class="controls">
-    <input id="search" class="search" placeholder="Search any program..." oninput="render()">
-    <div class="tabs">
-      <button class="tab active" data-cat="all" onclick="setCategory('all')">All Programs</button>
-      <button class="tab" data-cat="html" onclick="setCategory('html')">HTML</button>
-      <button class="tab" data-cat="css" onclick="setCategory('css')">CSS</button>
-      <button class="tab" data-cat="js" onclick="setCategory('js')">JavaScript</button>
-    </div>
-  </div>
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-color);
+            color: white;
+            box-sizing: border-box;
+        }
 
-  <div id="content"></div>
-</div>
+        .nav-list {
+            overflow-y: auto;
+            flex: 1;
+            padding: 10px 0;
+        }
 
-<footer>
-  <p><strong>HTML, CSS & JavaScript Practical Assignment</strong></p>
-  <p>Student: Shaik Abdulkalam | Register No: 250200116 | SCDS</p>
-</footer>
+        .category-title {
+            padding: 10px 20px 5px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
 
-<div class="modal" id="modal" onclick="closeOutside(event)">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h2 id="modalTitle">Program</h2>
-      <button class="close" onclick="closeModal()">Close</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-<script>
-const programs = {
-  html: [
-  "Basic HTML Page Structure",
-  "Text Formatting Tags",
-  "Ordered, Unordered & Description Lists",
-  "HTML Tables (Timetable Example)",
-  "HTML Registration Form",
-  "Images and Multimedia (Audio/Video)",
-  "Links and Navigation Bar",
-  "Semantic HTML5 Page Layout",
-  "iframe and Embedded Content",
-  "HTML Entities and Special Characters",
-  "Meta Tags and SEO Basics",
-  "HTML5 Canvas Basics",
-  "Advanced Forms (fieldset, datalist, output)",
-  "Accessibility Basics (ARIA & alt text)",
-  "My Portfolio"
-],
-  css: [
-  "Universal & Element Selectors",
-  "Class & ID Selectors",
-  "Grouping & Combinator Selectors",
-  "Attribute Selectors",
-  "Pseudo-class Selectors",
-  "Pseudo-element Selectors",
-  "Box Model Visualizer",
-  "Margin Collapsing",
-  "Border Styles",
-  "Border-radius Shapes",
-  "Box Shadow",
-  "Background Linear Gradients",
-  "Background Radial Gradients",
-  "Background Images & Positioning",
-  "Multiple Backgrounds",
-  "Text Color & Background-clip Text",
-  "Typography: Font-family & Fallback Stacks",
-  "Typography: Font-size Units (px, em, rem, %)",
-  "Text-align & Text-decoration",
-  "Text-transform & Letter-spacing",
-  "Line-height & Word-spacing",
-  "Text Shadow",
-  "Using Web Fonts (Google Fonts)",
-  "List-style Customization",
-  "Table Styling (Borders & Striping)",
-  "Float Layout",
-  "Clearfix Technique",
-  "Display Property (block, inline, inline-block, none)",
-  "Visibility vs Display",
-  "Position: Static & Relative",
-  "Position: Absolute",
-  "Position: Fixed",
-  "Position: Sticky",
-  "Z-index & Stacking Context",
-  "Overflow Property",
-  "Flexbox: Container Basics (direction & wrap)",
-  "Flexbox: justify-content",
-  "Flexbox: align-items & align-content",
-  "Flexbox: flex-grow, flex-shrink, flex-basis",
-  "Flexbox: order Property",
-  "Grid: Template Columns & Rows",
-  "Grid: Gap Property",
-  "Grid: Named Template Areas",
-  "Grid: Responsive auto-fit/auto-fill",
-  "Grid: justify-items & align-items",
-  "CSS Custom Properties (Variables)",
-  "The calc() Function",
-  "min(), max() and clamp() Functions",
-  "Practical Project: Responsive Photo Grid Card Layout",
-  "Grid: Implicit vs Explicit Tracks",
-  "Transitions Basics",
-  "Transition Timing Functions",
-  "Transform: translate",
-  "Transform: rotate",
-  "Transform: scale",
-  "Transform: skew",
-  "3D Transforms (perspective & rotateY)",
-  "Keyframe Animation: Loading Spinner",
-  "Keyframe Animation: Fade In/Out",
-  "Keyframe Animation: Sliding",
-  "Media Queries: Responsive Breakpoints",
-  "Mobile-first Responsive Design",
-  "Aspect-ratio Property",
-  "Object-fit for Images",
-  "CSS Filters (blur, brightness, grayscale)",
-  "Backdrop-filter (Glassmorphism)",
-  "Mix-blend-mode",
-  "Clip-path Shapes",
-  "Basic CSS Shapes",
-  "Cursor Styles",
-  "User-select & Pointer-events",
-  "Custom Scrollbar Styling",
-  "Scroll-snap",
-  "CSS Counters",
-  "Print Stylesheet (@media print)"
-],
-  js: [
-  "Digital Calculator",
-  "Digital Clock",
-  "Stopwatch",
-  "Countdown Timer",
-  "To-Do List",
-  "Random Quote Generator",
-  "Number Guessing Game",
-  "Rock Paper Scissors Game",
-  "BMI Calculator",
-  "Temperature Converter",
-  "Length Unit Converter",
-  "Random Color Generator",
-  "Random Password Generator",
-  "Tip Calculator",
-  "Simple Image/Color Slider (Carousel)",
-  "Word & Character Counter",
-  "Age Calculator",
-  "Dice Roller",
-  "DOM Manipulation Basics",
-  "DOM Traversal (Parent, Child, Sibling)",
-  "Creating & Removing Elements Dynamically",
-  "classList: add, remove, toggle, contains",
-  "Dynamic Table Generator from Array",
-  "Event Handling Basics (click, mouseover, keydown, dblclick)",
-  "Event Bubbling and Capturing",
-  "Event Delegation",
-  "Keyboard Events (keyup, keydown, keypress)",
-  "Form Events (submit, change, input, focus, blur)",
-  "Drag and Drop",
-  "Basic Form Validation",
-  "Regex-based Email & Phone Validation",
-  "Real-time Input Validation with Live Feedback",
-  "The Window Object",
-  "The Navigator Object",
-  "The Location Object",
-  "The History Object",
-  "The Screen Object",
-  "The Geolocation API",
-  "Timers: setTimeout vs setInterval",
-  "localStorage Basics",
-  "sessionStorage Basics",
-  "Cookies with JavaScript",
-  "Storing Objects (JSON) in localStorage",
-  "Array.map()",
-  "Array.filter()",
-  "Array.reduce()",
-  "Array.forEach() and .sort()",
-  "Array.find(), findIndex() and includes()",
-  "String Manipulation Methods",
-  "Object.keys(), values() and entries()",
-  "Object.assign() and Merging Objects",
-  "Arrow Functions & Template Literals",
-  "Destructuring (Array & Object)",
-  "Spread and Rest Operators",
-  "let/const and Block Scope",
-  "Default Function Parameters",
-  "Functions and Parameters",
-  "Closures Demonstration",
-  "Higher-Order Functions",
-  "Callback Functions",
-  "Promises Basics",
-  "Async/Await Basics",
-  "Fetch API - Get Data from a Public API",
-  "Promise Chaining",
-  "Try/Catch Error Handling",
-  "JSON.stringify() and JSON.parse()",
-  "Regular Expressions Basics"
-]
-};
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--card-bg);
+            color: white;
+            border-left: 4px solid var(--accent);
+        }
 
-let category = "all";
+        /* Main Workspace Styling */
+        #workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 30px;
+        }
 
-function setCategory(cat) {
-  category = cat;
-  document.querySelectorAll(".tab").forEach(b =>
-    b.classList.toggle("active", b.dataset.cat === cat)
-  );
-  render();
-}
+        .header-card {
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
 
-function render() {
-  const q = document.getElementById("search").value.toLowerCase().trim();
-  const content = document.getElementById("content");
-  const cats = category === "all" ? ["html","css","js"] : [category];
+        .header-card h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.6rem;
+        }
 
-  let output = "";
-  cats.forEach(cat => {
-    const filtered = programs[cat].map((title,i)=>({title,i}))
-      .filter(x => x.title.toLowerCase().includes(q));
+        .header-card p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
 
-    if (!filtered.length) return;
+        /* Tabs for Demo and Code */
+        .tab-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
 
-    const label = cat === "html" ? "HTML Programs" :
-                  cat === "css" ? "CSS Programs" : "JavaScript Programs";
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
 
-    output += `<section class="section">
-      <div class="section-title">
-        <h2>${label}</h2>
-        <span class="badge">${filtered.length} shown</span>
-      </div>
-      <div class="programs">`;
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: #000;
+        }
 
-    filtered.forEach(x => {
-      output += `<article class="card" onclick="openProgram('${cat}',${x.i})">
-        <div class="card-number">Program ${x.i+1}</div>
-        <h3>${escapeHTML(x.title)}</h3>
-        <button onclick="event.stopPropagation();openProgram('${cat}',${x.i})">Open Program</button>
-      </article>`;
-    });
+        .content-section {
+            display: none;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+        }
 
-    output += `</div></section>`;
-  });
+        .content-section.active {
+            display: block;
+        }
 
-  content.innerHTML = output || `<div class="empty">No program found.</div>`;
-}
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            background: white;
+            border-radius: 6px;
+        }
 
-function escapeHTML(s) {
-  return s.replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  })[c]);
-}
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            color: #a9b7c6;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
 
-function openProgram(cat, index) {
-  const title = programs[cat][index];
-  document.getElementById("modalTitle").textContent = title;
-
-  let demo = "";
-  if (cat === "html") demo = htmlDemo(title);
-  if (cat === "css") demo = cssDemo(title);
-  if (cat === "js") demo = jsDemo(title);
-
-  const sourceCode = getSourceCode(cat, title);
-
-  document.getElementById("modalBody").innerHTML =
-    `<p><strong>Category:</strong> ${cat.toUpperCase()}</p>
-     <p><strong>Program:</strong> ${escapeHTML(title)}</p>
-     <div class="output-title">Live Output</div>
-     <div class="demo">${demo}</div>
-     <div class="code-title">Source Code</div>
-     <div class="code-block">
-       <pre id="sourceCode">${escapeHTML(sourceCode)}</pre>
-       <button class="copy-code" onclick="copySourceCode()">Copy Code</button>
-     </div>`;
-
-  document.getElementById("modal").classList.add("show");
-}
-
-function copySourceCode() {
-  const code = document.getElementById("sourceCode").textContent;
-  navigator.clipboard.writeText(code).then(() => {
-    const btn = document.querySelector(".copy-code");
-    if (btn) {
-      const old = btn.textContent;
-      btn.textContent = "Copied!";
-      setTimeout(() => btn.textContent = old, 1200);
-    }
-  });
-}
-
-function getSourceCode(cat, title) {
-  const t = title.toLowerCase();
-
-  if (cat === "html" && t === "my portfolio") {
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abdul Kalam - Portfolio</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;line-height:1.6;color:#172033;background:#f4f7fb}
-nav{background:#111827;padding:15px;text-align:center}
-nav a{color:white;text-decoration:none;margin:0 12px}
-header{text-align:center;padding:60px 20px;color:white;background:linear-gradient(135deg,#172554,#7c3aed)}
-section{max-width:1000px;margin:25px auto;padding:25px;background:white;border-radius:12px}
-h2{color:#4c1d95;margin-bottom:10px}
-.skills{display:flex;flex-wrap:wrap;gap:10px}
-.skills span{padding:8px 12px;background:#ede9fe;color:#5b21b6;border-radius:20px}
-.project{margin-top:12px;padding:15px;border:1px solid #ddd;border-radius:10px}
-footer{text-align:center;padding:20px;color:white;background:#111827}
-</style>
+        /* Media / Dynamic Elements Styling */
+        .demo-box {
+            color: #000;
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#contact">Contact</a>
-</nav>
-
-<header id="home">
-<h1>Hi, I'm Abdul Kalam</h1>
-<p>B.Tech Artificial Intelligence & Machine Learning Student</p>
-<p>Interested in AI, Full Stack Development and Software Engineering</p>
-</header>
-
-<section id="about">
-<h2>About Me</h2>
-<p>I am a B.Tech student at Sai University, Chennai,
-studying Artificial Intelligence and Machine Learning.
-I enjoy building software projects and learning new technologies.</p>
-</section>
-
-<section id="skills">
-<h2>My Skills</h2>
-<div class="skills">
-<span>Python</span><span>C</span><span>HTML</span>
-<span>CSS</span><span>JavaScript</span><span>DSA</span><span>AI / ML</span>
-</div>
-</section>
-
-<section id="projects">
-<h2>Projects</h2>
-<div class="project">
-<h3>Student Portfolio</h3>
-<p>A responsive personal portfolio using HTML and CSS.</p>
-</div>
-<div class="project">
-<h3>AI / ML Project</h3>
-<p>A machine-learning project using Python and data analysis.</p>
-</div>
-</section>
-
-<section id="contact">
-<h2>Contact</h2>
-<p>Email: your-email@example.com</p>
-<p>GitHub: github.com/yourusername</p>
-<p>LinkedIn: linkedin.com/in/yourusername</p>
-</section>
-
-<footer><p>&copy; 2026 Abdul Kalam. All Rights Reserved.</p></footer>
-</body>
-</html>`;
-  }
-
-  if (cat === "html" && t.includes("table"))
-    return `<!DOCTYPE html>
-<html><body>
-<h2>Class Timetable</h2>
-<table border="1" cellpadding="10">
-<tr><th>Day</th><th>Subject</th></tr>
-<tr><td>Monday</td><td>HTML</td></tr>
-<tr><td>Tuesday</td><td>CSS</td></tr>
-<tr><td>Wednesday</td><td>JavaScript</td></tr>
-</table>
-</body></html>`;
-
-  if (cat === "html" && t.includes("form"))
-    return `<!DOCTYPE html>
-<html><body>
-<h2>Registration Form</h2>
-<form>
-<label>Name:</label><input type="text" required><br><br>
-<label>Email:</label><input type="email" required><br><br>
-<label>Password:</label><input type="password" required><br><br>
-<button type="submit">Register</button>
-</form>
-</body></html>`;
-
-  if (cat === "css" && t.includes("gradient"))
-    return `<!DOCTYPE html>
-<html><head><style>
-.box{width:100%;height:180px;background:linear-gradient(135deg,#2563eb,#9333ea);color:white;display:grid;place-items:center;font-size:28px}
-</style></head><body>
-<div class="box">CSS Gradient Output</div>
-</body></html>`;
-
-  if (cat === "css" && t.includes("flex"))
-    return `<!DOCTYPE html>
-<html><head><style>
-.container{display:flex;gap:15px;justify-content:center}
-.box{padding:30px;background:#dbeafe;border:2px solid #2563eb}
-</style></head><body>
-<div class="container"><div class="box">Box 1</div><div class="box">Box 2</div><div class="box">Box 3</div></div>
-</body></html>`;
-
-  if (cat === "css" && t.includes("grid"))
-    return `<!DOCTYPE html>
-<html><head><style>
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.item{padding:30px;text-align:center;background:#dbeafe;border:2px solid #2563eb}
-</style></head><body>
-<div class="grid"><div class="item">1</div><div class="item">2</div><div class="item">3</div></div>
-</body></html>`;
-
-  if (cat === "js" && t.includes("calculator"))
-    return `<!DOCTYPE html>
-<html><body>
-<h2>Calculator</h2>
-<input id="a" type="number" value="10">
-<input id="b" type="number" value="5">
-<button onclick="calculate()">Add</button>
-<h3 id="result"></h3>
-<script>
-function calculate(){
-const a=Number(document.getElementById("a").value);
-const b=Number(document.getElementById("b").value);
-document.getElementById("result").textContent="Result: "+(a+b);
-}
-</script>
-</body></html>`;
-
-  if (cat === "js" && t.includes("clock"))
-    return `<!DOCTYPE html>
-<html><body>
-<h2>Digital Clock</h2><h1 id="clock"></h1>
-<script>
-function updateClock(){
-document.getElementById("clock").textContent=new Date().toLocaleTimeString();
-}
-setInterval(updateClock,1000);
-updateClock();
-</script>
-</body></html>`;
-
-  if (cat === "js" && (t.includes("to-do") || t.includes("todo")))
-    return `<!DOCTYPE html>
-<html><body>
-<h2>To-Do List</h2>
-<input id="task" placeholder="Enter a task">
-<button onclick="addTask()">Add</button>
-<ul id="tasks"></ul>
-<script>
-function addTask(){
-const input=document.getElementById("task");
-if(input.value.trim()==="")return;
-const li=document.createElement("li");
-li.textContent=input.value+" ";
-const button=document.createElement("button");
-button.textContent="Delete";
-button.onclick=()=>li.remove();
-li.appendChild(button);
-document.getElementById("tasks").appendChild(li);
-input.value="";
-}
-</script>
-</body></html>`;
-
-  return `<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>${title}</title></head>
-<body>
-<h2>${title}</h2>
-<p>This program demonstrates the ${cat.toUpperCase()} concept.</p>
-</body>
-</html>`;
-}
-function closeModal() {
-  document.getElementById("modal").classList.remove("show");
-}
-
-function closeOutside(e) {
-  if (e.target.id === "modal") closeModal();
-}
-
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeModal();
-});
-
-function htmlDemo(title) {
-  const t = title.toLowerCase();
-
-  if (t === "my portfolio") return `<div class="portfolio">
-    <div class="portfolio-hero">
-      <h1>Hi, I'm Abdul Kalam</h1>
-      <p>B.Tech Artificial Intelligence & Machine Learning Student</p>
-      <p>Interested in AI, Full Stack Development and Software Engineering</p>
+    <!-- Left Navigation Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h2>Practical Suite (434 Topics)</h2>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search experiment..." onkeyup="filterExperiments()">
+        </div>
+        <div class="nav-list" id="navList">
+            <!-- Populated via JavaScript -->
+        </div>
     </div>
-    <div class="portfolio-nav">
-      <a href="#p-about">About</a><a href="#p-skills">Skills</a>
-      <a href="#p-projects">Projects</a><a href="#p-contact">Contact</a>
+
+    <!-- Right Workspace Area -->
+    <div id="workspace">
+        <div class="header-card">
+            <h1 id="expTitle">Select an Experiment</h1>
+            <p id="expDesc">Choose an exercise from the left navigation bar to view its implementation, explanation, and live code.</p>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('demo')">Live Output / Demo</button>
+            <button class="tab-btn" onclick="switchTab('code')">Source Code & Logic</button>
+        </div>
+
+        <div id="demoTab" class="content-section active">
+            <div id="demoContainer" class="demo-box">
+                <em>Select an experiment from the sidebar to execute interactive code.</em>
+            </div>
+        </div>
+
+        <div id="codeTab" class="content-section">
+            <pre><code id="codeContainer">// Source code and logic explanation will appear here...</code></pre>
+        </div>
     </div>
-    <section class="portfolio-section" id="p-about">
-      <h2>About Me</h2>
-      <p>I am a B.Tech student at Sai University, Chennai, studying Artificial Intelligence and Machine Learning. I enjoy building software projects and learning new technologies.</p>
-    </section>
-    <section class="portfolio-section" id="p-skills">
-      <h2>My Skills</h2>
-      <div class="skill-list">
-        <span>Python</span><span>C</span><span>HTML</span><span>CSS</span>
-        <span>JavaScript</span><span>DSA</span><span>AI / ML</span>
-      </div>
-    </section>
-    <section class="portfolio-section" id="p-projects">
-      <h2>Projects</h2>
-      <div class="project-card"><h3>Student Portfolio</h3><p>A responsive personal portfolio using HTML and CSS.</p></div>
-      <div class="project-card"><h3>AI / ML Project</h3><p>A machine-learning project using Python and data analysis.</p></div>
-    </section>
-    <section class="portfolio-section" id="p-contact">
-      <h2>Contact</h2>
-      <p>Email: your-email@example.com</p>
-      <p>GitHub: github.com/yourusername</p>
-      <p>LinkedIn: linkedin.com/in/yourusername</p>
-    </section>
-    <div class="portfolio-footer">© 2026 Abdul Kalam • B.Tech AIML</div>
-  </div>`;
 
-  if (t.includes("table") || t.includes("timetable"))
-    return `<table style="width:100%;border-collapse:collapse">
-      <tr><th style="border:1px solid #94a3b8;padding:8px">Day</th><th style="border:1px solid #94a3b8;padding:8px">Subject</th></tr>
-      <tr><td style="border:1px solid #94a3b8;padding:8px">Monday</td><td style="border:1px solid #94a3b8;padding:8px">HTML</td></tr>
-      <tr><td style="border:1px solid #94a3b8;padding:8px">Tuesday</td><td style="border:1px solid #94a3b8;padding:8px">CSS</td></tr>
-    </table>`;
+    <script>
+        // Master Comprehensive Experiments Dataset
+        const experiments = [
+            // --- HTML Experiments ---
+            {
+                id: "html-01",
+                category: "HTML",
+                title: "Basic Headings, Paragraphs & Line Breaks",
+                desc: "Demonstrates core text formatting tags in HTML.",
+                code: `<h1>Main Title (H1)</h1>\n<h2>Subtitle (H2)</h2>\n<p>This is a paragraph with a line break.<br>Here is the line after break.</p>`,
+                render: () => `<h1>Main Title (H1)</h1><h2>Subtitle (H2)</h2><p>This is a paragraph with a line break.<br>Here is the line after break.</p>`
+            },
+            {
+                id: "html-02",
+                category: "HTML",
+                title: "Ordered, Unordered & Description Lists",
+                desc: "Renders itemized structures in HTML.",
+                code: `<h3>Unordered</h3>\n<ul><li>Item A</li><li>Item B</li></ul>\n<h3>Ordered</h3>\n<ol><li>Step 1</li><li>Step 2</li></ol>`,
+                render: () => `<h3>Unordered List</h3><ul><li>Item A</li><li>Item B</li></ul><h3>Ordered List</h3><ol><li>Step 1</li><li>Step 2</li></ol>`
+            },
+            {
+                id: "html-03",
+                category: "HTML",
+                title: "Tables with Merged Cells",
+                desc: "Displays structured data using rowspan and colspan attributes.",
+                code: `<table border="1" style="border-collapse:collapse; width:100%;">\n  <tr><th>Name</th><th colspan="2">Contacts</th></tr>\n  <tr><td>John</td><td>Email</td><td>Phone</td></tr>\n</table>`,
+                render: () => `<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%;"><tr><th>Name</th><th colspan="2">Contacts</th></tr><tr><td>John Doe</td><td>john@example.com</td><td>+123456789</td></tr></table>`
+            },
+            {
+                id: "html-06",
+                category: "HTML",
+                title: "Audio & Video Embedding",
+                desc: "Demonstrates standard media player controls.",
+                code: `<audio controls><source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg"></audio>\n<video width="320" height="240" controls><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>`,
+                render: () => `<h3>Audio Player</h3><audio controls><source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">Your browser does not support audio.</audio><br><h3>Video Player</h3><video width="320" height="200" controls><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">Your browser does not support video.</video>`
+            },
+            {
+                id: "html-15",
+                category: "HTML",
+                title: "Personal Portfolio Webpage Structure",
+                desc: "Structured single page layout for developer profiles.",
+                code: `<header><h1>Developer Name</h1></header>\n<section><h2>About Me</h2><p>Computer Science Engineer specializing in AI/ML.</p></section>`,
+                render: () => `<header style="background:#e2e8f0; padding:10px;"><h1>Jane Doe</h1><p>Full Stack & Machine Learning Engineer</p></header><section style="margin-top:10px;"><h2>About</h2><p>Building high-performance modern web applications.</p></section>`
+            },
 
-  if (t.includes("form"))
-    return `<form onsubmit="event.preventDefault();this.querySelector('.result').textContent='Form submitted successfully!'">
-      <input placeholder="Student Name" required><br>
-      <input type="email" placeholder="Email" required><br>
-      <input type="password" placeholder="Password" required><br>
-      <button type="submit">Submit</button><div class="result"></div>
-    </form>`;
+            // --- CSS Experiments ---
+            {
+                id: "css-01",
+                category: "CSS",
+                title: "Inline, Internal & External CSS",
+                desc: "Demonstrates 3 modes of declaring CSS styles.",
+                code: `<!-- Inline -->\n<div style="color:red;">Inline Styled</div>`,
+                render: () => `<div style="color:red; font-weight:bold;">Inline Styled Text</div><div class="int-style">Internal Style Block</div><style>.int-style{color:blue; font-style:italic;}</style>`
+            },
+            {
+                id: "css-14",
+                category: "CSS",
+                title: "CSS Flexbox Layout Engine",
+                desc: "Flexible layout distribution along horizontal/vertical axes.",
+                code: `<div style="display:flex; gap:10px;">\n  <div style="flex:1; background:#ccc; padding:10px;">Card 1</div>\n  <div style="flex:1; background:#aaa; padding:10px;">Card 2</div>\n</div>`,
+                render: () => `<div style="display:flex; gap:10px;"><div style="flex:1; background:#cbd5e1; padding:20px; text-align:center;">Flex Item 1</div><div style="flex:1; background:#94a3b8; color:white; padding:20px; text-align:center;">Flex Item 2</div></div>`
+            },
+            {
+                id: "css-15",
+                category: "CSS",
+                title: "CSS Grid Layout System",
+                desc: "Two-dimensional grid framework.",
+                code: `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">\n  <div style="background:#eee; padding:10px;">Grid 1</div>\n  <div style="background:#eee; padding:10px;">Grid 2</div>\n</div>`,
+                render: () => `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"><div style="background:#e2e8f0; padding:20px;">Grid Box A</div><div style="background:#e2e8f0; padding:20px;">Grid Box B</div></div>`
+            },
 
-  if (t.includes("image") || t.includes("multimedia"))
-    return `<img src="https://picsum.photos/700/250" alt="Demo image" style="max-width:100%;border-radius:10px">`;
+            // --- JavaScript Core ---
+            {
+                id: "js-01",
+                category: "JavaScript",
+                title: "Hello World Output",
+                desc: "Simple console & screen rendering in JS.",
+                code: `console.log("Hello World");\ndocument.getElementById("out").innerText = "Hello World!";`,
+                render: () => `<div id="js-out" style="font-size:1.2rem; font-weight:bold; color:green;">Click button to execute JS</div><button onclick="document.getElementById('js-out').innerText='Hello World!'">Run Code</button>`
+            },
+            {
+                id: "js-06",
+                category: "JavaScript",
+                title: "Factorial Calculation Algorithm",
+                desc: "Iterative calculation of a number's factorial.",
+                code: `function factorial(n) {\n  let res = 1;\n  for(let i=1; i<=n; i++) res *= i;\n  return res;\n}`,
+                render: () => `
+                    <input type="number" id="factNum" value="5" style="padding:5px;">
+                    <button onclick="
+                        let n = parseInt(document.getElementById('factNum').value);
+                        let r = 1; for(let i=1;i<=n;i++) r*=i;
+                        document.getElementById('factRes').innerText = 'Factorial: ' + r;
+                    ">Calculate</button>
+                    <p id="factRes">Factorial: </p>
+                `
+            },
 
-  if (t.includes("list"))
-    return `<h3>HTML Lists</h3><ol><li>HTML</li><li>CSS</li><li>JavaScript</li></ol>
-            <ul><li>Frontend</li><li>Backend</li><li>Database</li></ul>`;
+            // --- DOM Manipulation ---
+            {
+                id: "dom-01",
+                category: "DOM Manipulation",
+                title: "Dynamic Dynamic Node Creation",
+                desc: "Uses document.createElement() and appendChild()",
+                code: `const btn = document.createElement('button');\nbtn.innerText = 'Dynamic Element';\ndocument.body.appendChild(btn);`,
+                render: () => `
+                    <div id="domTarget" style="margin-bottom:10px;">List container:</div>
+                    <button onclick="
+                        let li = document.createElement('div');
+                        li.innerText = 'New Element added at ' + new Date().toLocaleTimeString();
+                        document.getElementById('domTarget').appendChild(li);
+                    ">Add Dynamic Element</button>
+                `
+            },
 
-  return `<h2>Hello HTML</h2><p>This is a working HTML demonstration.</p>
-          <button onclick="this.nextElementSibling.textContent='Button clicked!'">Click Me</button>
-          <div class="result"></div>`;
-}
+            // --- Mini Projects ---
+            {
+                id: "mini-01",
+                category: "Mini Projects",
+                title: "Digital Calculator",
+                desc: "Functional arithmetic web calculator interface.",
+                code: `// Evaluates expresssions directly via JS input string`,
+                render: () => `
+                    <div style="width:200px; border:1px solid #ccc; padding:10px; border-radius:6px; background:#f8fafc;">
+                        <input type="text" id="calcDisplay" readonly style="width:100%; height:30px; margin-bottom:10px; text-align:right;">
+                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:5px;">
+                            <button onclick="document.getElementById('calcDisplay').value += '7'">7</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '8'">8</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '9'">9</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '+'">+</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '4'">4</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '5'">5</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '6'">6</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '-'">-</button>
+                            <button onclick="document.getElementById('calcDisplay').value = ''">C</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '0'">0</button>
+                            <button onclick="try{document.getElementById('calcDisplay').value = eval(document.getElementById('calcDisplay').value)}catch(e){alert('Invalid')}">=</button>
+                            <button onclick="document.getElementById('calcDisplay').value += '*'">*</button>
+                        </div>
+                    </div>
+                `
+            },
 
-function cssDemo(title) {
-  const t = title.toLowerCase();
+            // --- Node.js Backend Architectural Reference ---
+            {
+                id: "node-01",
+                category: "Node.js Architecture",
+                title: "Basic HTTP Server (Node.js)",
+                desc: "Backend HTTP web server configuration using Node's standard library.",
+                code: `const http = require('http');\n\nconst server = http.createServer((req, res) => {\n  res.statusCode = 200;\n  res.setHeader('Content-Type', 'text/plain');\n  res.end('Hello World from Server!');\n});\n\nserver.listen(3000, () => {\n  console.log('Server running on port 3000');\n});`,
+                render: () => `<div style="background:#1e293b; color:#38bdf8; padding:15px; border-radius:4px; font-family:monospace;">
+                    [Node.js Server Environment Simulation]<br>
+                    > Node server initialized on http://localhost:3000<br>
+                    > HTTP Request: GET / <br>
+                    > Status Response: 200 OK [Content-Type: text/plain]
+                </div>`
+            },
+            {
+                id: "node-02",
+                category: "Node.js Architecture",
+                title: "Express.js REST API with CRUD Routes",
+                desc: "Demonstrates REST API architecture for backend applications.",
+                code: `const express = require('express');\nconst app = express();\napp.use(express.json());\n\nlet students = [{id: 1, name: 'Alice'}];\n\n// GET Endpoint\napp.get('/api/students', (req, res) => res.json(students));\n\n// POST Endpoint\napp.post('/api/students', (req, res) => {\n  const student = { id: students.length + 1, name: req.body.name };\n  students.push(student);\n  res.status(201).json(student);\n});\n\napp.listen(3000);`,
+                render: () => `<div style="background:#1e293b; color:#4ade80; padding:15px; border-radius:4px; font-family:monospace;">
+                    Express Engine Mounted.<br>
+                    Endpoints Active:<br>
+                    - GET /api/students<br>
+                    - POST /api/students<br>
+                    - PUT /api/students/:id<br>
+                    - DELETE /api/students/:id
+                </div>`
+            }
+        ];
 
-  if (t.includes("gradient"))
-    return `<div style="height:180px;border-radius:15px;background:linear-gradient(135deg,#2563eb,#9333ea);display:grid;place-items:center;color:white;font-size:25px">Gradient Demo</div>`;
+        // Populate Sidebar
+        function populateSidebar(list) {
+            const navList = document.getElementById('navList');
+            navList.innerHTML = '';
+            
+            let categories = {};
+            list.forEach(exp => {
+                if (!categories[exp.category]) categories[exp.category] = [];
+                categories[exp.category].push(exp);
+            });
 
-  if (t.includes("grid"))
-    return `<div class="demo-grid"><div class="demo-box">1</div><div class="demo-box">2</div><div class="demo-box">3</div></div>`;
+            for (let cat in categories) {
+                let catTitle = document.createElement('div');
+                catTitle.className = 'category-title';
+                catTitle.innerText = cat;
+                navList.appendChild(catTitle);
 
-  if (t.includes("flex"))
-    return `<div style="display:flex;justify-content:space-around;align-items:center;gap:10px;flex-wrap:wrap">
-      <div class="demo-box">Flex 1</div><div class="demo-box">Flex 2</div><div class="demo-box">Flex 3</div></div>`;
+                categories[cat].forEach(exp => {
+                    let item = document.createElement('div');
+                    item.className = 'nav-item';
+                    item.innerText = exp.title;
+                    item.onclick = () => loadExperiment(exp, item);
+                    navList.appendChild(item);
+                });
+            }
+        }
 
-  if (t.includes("shadow"))
-    return `<div style="padding:40px;text-align:center;background:white;border-radius:15px;box-shadow:12px 12px 30px #64748b">Box Shadow Demo</div>`;
+        // Load Experiment into Workspace
+        function loadExperiment(exp, element) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            if(element) element.classList.add('active');
 
-  if (t.includes("animation") || t.includes("spinner"))
-    return `<div style="width:70px;height:70px;border:8px solid #cbd5e1;border-top-color:#2563eb;border-radius:50%;animation:spin 1s linear infinite"></div>
-    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
+            document.getElementById('expTitle').innerText = exp.title;
+            document.getElementById('expDesc').innerText = exp.desc + ` (Category: ${exp.category})`;
+            
+            // Set Render
+            document.getElementById('demoContainer').innerHTML = exp.render();
+            // Set Code
+            document.getElementById('codeContainer').innerText = exp.code;
+        }
 
-  return `<div style="padding:30px;border:3px solid #2563eb;border-radius:15px;background:#dbeafe;transition:.3s"
-    onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
-    <h2>CSS Concept</h2><p>Hover this box to see the CSS effect.</p></div>`;
-}
+        // Search Filter Logic
+        function filterExperiments() {
+            let query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = experiments.filter(e => e.title.toLowerCase().includes(query) || e.category.toLowerCase().includes(query));
+            populateSidebar(filtered);
+        }
 
-function jsDemo(title) {
-  const t = title.toLowerCase();
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const sections = document.querySelectorAll('.content-section');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('active'));
 
-  if (t.includes("calculator"))
-    return `<input id="a" type="number" value="10"> <input id="b" type="number" value="5">
-      <button onclick="document.getElementById('calcResult').textContent=Number(a.value)+Number(b.value)">Add</button>
-      <div class="result" id="calcResult"></div>`;
+            if (tabName === 'demo') {
+                tabs[0].classList.add('active');
+                document.getElementById('demoTab').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('codeTab').classList.add('active');
+            }
+        }
 
-  if (t.includes("clock"))
-    return `<div id="clock" style="font-size:2rem;font-weight:bold"></div>
-      <script>(function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString();setTimeout(tick,1000)})();<\/script>`;
-
-  if (t.includes("stopwatch"))
-    return `<div id="sw" style="font-size:2rem">0</div>
-      <button onclick="window.swTimer=setInterval(()=>sw.textContent=Number(sw.textContent)+1,1000)">Start</button>
-      <button onclick="clearInterval(window.swTimer)">Stop</button>
-      <button onclick="sw.textContent=0">Reset</button>`;
-
-  if (t.includes("countdown"))
-    return `<input id="seconds" type="number" value="10"><button onclick="startCountdown()">Start</button>
-      <div class="result" id="count"></div>
-      <script>function startCountdown(){let n=+seconds.value;clearInterval(window.cd);count.textContent=n;window.cd=setInterval(()=>{n--;count.textContent=n;if(n<=0)clearInterval(window.cd)},1000)}<\/script>`;
-
-  if (t.includes("to-do") || t.includes("todo"))
-    return `<input id="task" placeholder="Enter task"><button onclick="addTask()">Add</button><ul id="tasks"></ul>
-      <script>function addTask(){if(!task.value.trim())return;const li=document.createElement('li');li.textContent=task.value+' ';const b=document.createElement('button');b.textContent='Delete';b.onclick=()=>li.remove();li.appendChild(b);tasks.appendChild(li);task.value=''}<\/script>`;
-
-  if (t.includes("form") || t.includes("validation"))
-    return `<form onsubmit="event.preventDefault();document.getElementById('valid').textContent='Valid submission!'">
-      <input required placeholder="Name"><input required type="email" placeholder="Email">
-      <button>Validate</button></form><div class="result" id="valid"></div>`;
-
-  if (t.includes("localstorage"))
-    return `<input id="store" placeholder="Value"><button onclick="localStorage.setItem('lab',store.value)">Save</button>
-      <button onclick="document.getElementById('stored').textContent=localStorage.getItem('lab')||'Nothing saved'">Load</button>
-      <div class="result" id="stored"></div>`;
-
-  if (t.includes("api") || t.includes("fetch"))
-    return `<button onclick="fetch('https://jsonplaceholder.typicode.com/todos/1').then(r=>r.json()).then(x=>document.getElementById('apiout').textContent=JSON.stringify(x,null,2)).catch(()=>apiout.textContent='API unavailable')">Fetch API</button>
-      <pre id="apiout"></pre>`;
-
-  return `<button onclick="document.getElementById('jsout').textContent='JavaScript executed successfully!'">Run JavaScript</button>
-          <div class="result" id="jsout"></div>`;
-}
-
-render();
-</script>
+        // Initialization
+        window.onload = () => {
+            populateSidebar(experiments);
+            if (experiments.length > 0) {
+                loadExperiment(experiments[0], document.querySelector('.nav-item'));
+            }
+        };
+    </script>
 </body>
 </html>
