@@ -1,607 +1,457 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Practical Assignment Portal — HTML, CSS, JS & Node.js</title>
-  <style>
-    :root {
-      --bg-main: #0f172a;
-      --bg-card: #1e293b;
-      --bg-sidebar: #0f172a;
-      --accent-html: #f97316;
-      --accent-css: #38bdf8;
-      --accent-js: #facc15;
-      --accent-node: #22c55e;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
-      --code-bg: #0d1117;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HTML, CSS and JavaScript Practical Programs">
+<title>HTML CSS JavaScript Practical Lab</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b1220;--panel:#111c2f;--panel2:#17243a;--text:#f8fafc;
+  --muted:#9fb0c5;--border:#2b3a52;--html:#f97316;--css:#38bdf8;--js:#facc15;
+  --accent:#8b5cf6;
+}
+body{font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{padding:35px 20px;text-align:center;background:linear-gradient(135deg,#172554,#4c1d95);border-bottom:1px solid var(--border)}
+header h1{font-size:clamp(1.8rem,5vw,3.2rem);margin-bottom:8px}
+header p{color:#dbeafe;font-size:1.05rem}
+.container{width:min(1250px,94%);margin:25px auto}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.stat b{display:block;font-size:2rem}
+.stat span{color:var(--muted)}
+.controls{position:sticky;top:0;z-index:10;background:rgba(11,18,32,.94);backdrop-filter:blur(12px);padding:12px 0}
+.search{width:100%;padding:14px 16px;background:var(--panel);color:white;border:1px solid var(--border);border-radius:10px;font-size:16px;outline:none}
+.tabs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.tab{flex:1;min-width:130px;padding:12px;border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:9px;cursor:pointer;font-weight:700}
+.tab.active{color:#fff;background:var(--accent);border-color:var(--accent)}
+.section{margin-top:25px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title h2{font-size:1.4rem}
+.badge{padding:5px 10px;border-radius:999px;font-size:.8rem;background:var(--panel2);color:var(--muted)}
+.programs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:17px;transition:.2s;cursor:pointer}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card-number{font-size:.78rem;color:var(--muted);margin-bottom:7px}
+.card h3{font-size:1rem;line-height:1.45}
+.card button{margin-top:12px;background:var(--accent);color:white;border:0;border-radius:7px;padding:8px 12px;cursor:pointer;font-weight:700}
+.empty{padding:35px;text-align:center;color:var(--muted);background:var(--panel);border-radius:12px}
+footer{margin-top:40px;padding:30px;text-align:center;color:var(--muted);border-top:1px solid var(--border)}
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    header {
-      background: #1e293b;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand h1 {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .badge {
-      background: #334155;
-      color: #38bdf8;
-      font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
-
-    .search-box {
-      position: relative;
-      width: 320px;
-    }
-
-    .search-box input {
-      width: 100%;
-      background: #0f172a;
-      border: 1px solid var(--border-color);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: #38bdf8;
-    }
-
-    .main-layout {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    /* Navigation Sidebar */
-    .sidebar {
-      width: 340px;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border-color);
-      background: #1e293b;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px 4px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .tab-btn:hover {
-      color: white;
-    }
-
-    .tab-btn.active[data-cat="html"] { color: var(--accent-html); border-bottom: 2px solid var(--accent-html); }
-    .tab-btn.active[data-cat="css"] { color: var(--accent-css); border-bottom: 2px solid var(--accent-css); }
-    .tab-btn.active[data-cat="js"] { color: var(--accent-js); border-bottom: 2px solid var(--accent-js); }
-    .tab-btn.active[data-cat="node"] { color: var(--accent-node); border-bottom: 2px solid var(--accent-node); }
-
-    .exp-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px;
-    }
-
-    .exp-item {
-      padding: 10px 12px;
-      border-radius: 6px;
-      margin-bottom: 4px;
-      cursor: pointer;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      border: 1px solid transparent;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .exp-item:hover {
-      background: #1e293b;
-      color: white;
-    }
-
-    .exp-item.active {
-      background: #1e293b;
-      color: white;
-      border-color: var(--border-color);
-    }
-
-    .exp-num {
-      font-size: 0.7rem;
-      opacity: 0.6;
-      width: 28px;
-    }
-
-    /* Workspace / Preview Frame */
-    .workspace {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: #090d16;
-    }
-
-    .workspace-header {
-      padding: 12px 20px;
-      background: #1e293b;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .workspace-header h2 {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .view-modes {
-      display: flex;
-      gap: 6px;
-    }
-
-    .view-btn {
-      background: #0f172a;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .view-btn.active {
-      background: #334155;
-      color: white;
-    }
-
-    .content-container {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-
-    .editor-pane, .preview-pane {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .editor-pane {
-      border-right: 1px solid var(--border-color);
-    }
-
-    textarea {
-      width: 100%;
-      height: 100%;
-      background: var(--code-bg);
-      color: #e2e8f0;
-      border: none;
-      padding: 16px;
-      font-family: "Fira Code", monospace, consolas;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      resize: none;
-      outline: none;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: white;
-    }
-  </style>
+/* Demo modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+.modal.show{display:flex}
+.modal-box{width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;color:#111827;border-radius:15px}
+.modal-head{padding:18px 22px;background:#111827;color:white;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.close{background:#ef4444;color:white;border:0;border-radius:7px;padding:8px 12px;cursor:pointer}
+.modal-body{padding:25px}
+.demo{border:1px solid #d1d5db;border-radius:12px;padding:20px;margin-top:15px;background:#f8fafc}
+.demo input,.demo select,.demo textarea{padding:10px;border:1px solid #cbd5e1;border-radius:7px;margin:5px 0;max-width:100%}
+.demo button{padding:9px 13px;border:0;border-radius:7px;background:#2563eb;color:white;cursor:pointer;margin:4px}
+.result{margin-top:12px;padding:10px;background:#e2e8f0;border-radius:7px;min-height:20px}
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.demo-box{padding:20px;border-radius:10px;background:#dbeafe;border:2px solid #2563eb}
+pre{background:#0f172a;color:#93c5fd;padding:15px;border-radius:9px;overflow:auto}
+@media(max-width:700px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .demo-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
+<header>
+  <h1>HTML • CSS • JavaScript Practical Lab</h1>
+  <p>All programs in one GitHub-ready HTML file</p>
+</header>
 
-  <header>
-    <div class="brand">
-      <h1>Practical Assignment Portal</h1>
-      <span class="badge">434 Experiments Included</span>
-    </div>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search experiments (e.g. Flexbox, Calculator, Express)..." oninput="filterExperiments()">
-    </div>
-  </header>
+<div class="container">
+  <div class="stats">
+    <div class="stat"><b>15</b><span>HTML Programs</span></div>
+    <div class="stat"><b>75</b><span>CSS Programs</span></div>
+    <div class="stat"><b>67</b><span>JavaScript Programs</span></div>
+    <div class="stat"><b>157</b><span>Total</span></div>
+  </div>
 
-  <div class="main-layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="tabs">
-        <button class="tab-btn active" data-cat="html" onclick="switchCategory('html')">HTML (15)</button>
-        <button class="tab-btn" data-cat="css" onclick="switchCategory('css')">CSS (75)</button>
-        <button class="tab-btn" data-cat="js" onclick="switchCategory('js')">JS (290)</button>
-        <button class="tab-btn" data-cat="node" onclick="switchCategory('node')">Node (54)</button>
+  <div class="controls">
+    <input id="search" class="search" placeholder="Search any program..." oninput="render()">
+    <div class="tabs">
+      <button class="tab active" data-cat="all" onclick="setCategory('all')">All Programs</button>
+      <button class="tab" data-cat="html" onclick="setCategory('html')">HTML</button>
+      <button class="tab" data-cat="css" onclick="setCategory('css')">CSS</button>
+      <button class="tab" data-cat="js" onclick="setCategory('js')">JavaScript</button>
+    </div>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<footer>
+  <p><strong>HTML, CSS & JavaScript Practical Assignment</strong></p>
+  <p>Student: Shaik Abdulkalam | Register No: 250200116 | SCDS</p>
+</footer>
+
+<div class="modal" id="modal" onclick="closeOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">Program</h2>
+      <button class="close" onclick="closeModal()">Close</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const programs = {
+  html: [
+  "Basic HTML Page Structure",
+  "Text Formatting Tags",
+  "Ordered, Unordered & Description Lists",
+  "HTML Tables (Timetable Example)",
+  "HTML Registration Form",
+  "Images and Multimedia (Audio/Video)",
+  "Links and Navigation Bar",
+  "Semantic HTML5 Page Layout",
+  "iframe and Embedded Content",
+  "HTML Entities and Special Characters",
+  "Meta Tags and SEO Basics",
+  "HTML5 Canvas Basics",
+  "Advanced Forms (fieldset, datalist, output)",
+  "Accessibility Basics (ARIA & alt text)",
+  "My Portfolio"
+],
+  css: [
+  "Universal & Element Selectors",
+  "Class & ID Selectors",
+  "Grouping & Combinator Selectors",
+  "Attribute Selectors",
+  "Pseudo-class Selectors",
+  "Pseudo-element Selectors",
+  "Box Model Visualizer",
+  "Margin Collapsing",
+  "Border Styles",
+  "Border-radius Shapes",
+  "Box Shadow",
+  "Background Linear Gradients",
+  "Background Radial Gradients",
+  "Background Images & Positioning",
+  "Multiple Backgrounds",
+  "Text Color & Background-clip Text",
+  "Typography: Font-family & Fallback Stacks",
+  "Typography: Font-size Units (px, em, rem, %)",
+  "Text-align & Text-decoration",
+  "Text-transform & Letter-spacing",
+  "Line-height & Word-spacing",
+  "Text Shadow",
+  "Using Web Fonts (Google Fonts)",
+  "List-style Customization",
+  "Table Styling (Borders & Striping)",
+  "Float Layout",
+  "Clearfix Technique",
+  "Display Property (block, inline, inline-block, none)",
+  "Visibility vs Display",
+  "Position: Static & Relative",
+  "Position: Absolute",
+  "Position: Fixed",
+  "Position: Sticky",
+  "Z-index & Stacking Context",
+  "Overflow Property",
+  "Flexbox: Container Basics (direction & wrap)",
+  "Flexbox: justify-content",
+  "Flexbox: align-items & align-content",
+  "Flexbox: flex-grow, flex-shrink, flex-basis",
+  "Flexbox: order Property",
+  "Grid: Template Columns & Rows",
+  "Grid: Gap Property",
+  "Grid: Named Template Areas",
+  "Grid: Responsive auto-fit/auto-fill",
+  "Grid: justify-items & align-items",
+  "CSS Custom Properties (Variables)",
+  "The calc() Function",
+  "min(), max() and clamp() Functions",
+  "Practical Project: Responsive Photo Grid Card Layout",
+  "Grid: Implicit vs Explicit Tracks",
+  "Transitions Basics",
+  "Transition Timing Functions",
+  "Transform: translate",
+  "Transform: rotate",
+  "Transform: scale",
+  "Transform: skew",
+  "3D Transforms (perspective & rotateY)",
+  "Keyframe Animation: Loading Spinner",
+  "Keyframe Animation: Fade In/Out",
+  "Keyframe Animation: Sliding",
+  "Media Queries: Responsive Breakpoints",
+  "Mobile-first Responsive Design",
+  "Aspect-ratio Property",
+  "Object-fit for Images",
+  "CSS Filters (blur, brightness, grayscale)",
+  "Backdrop-filter (Glassmorphism)",
+  "Mix-blend-mode",
+  "Clip-path Shapes",
+  "Basic CSS Shapes",
+  "Cursor Styles",
+  "User-select & Pointer-events",
+  "Custom Scrollbar Styling",
+  "Scroll-snap",
+  "CSS Counters",
+  "Print Stylesheet (@media print)"
+],
+  js: [
+  "Digital Calculator",
+  "Digital Clock",
+  "Stopwatch",
+  "Countdown Timer",
+  "To-Do List",
+  "Random Quote Generator",
+  "Number Guessing Game",
+  "Rock Paper Scissors Game",
+  "BMI Calculator",
+  "Temperature Converter",
+  "Length Unit Converter",
+  "Random Color Generator",
+  "Random Password Generator",
+  "Tip Calculator",
+  "Simple Image/Color Slider (Carousel)",
+  "Word & Character Counter",
+  "Age Calculator",
+  "Dice Roller",
+  "DOM Manipulation Basics",
+  "DOM Traversal (Parent, Child, Sibling)",
+  "Creating & Removing Elements Dynamically",
+  "classList: add, remove, toggle, contains",
+  "Dynamic Table Generator from Array",
+  "Event Handling Basics (click, mouseover, keydown, dblclick)",
+  "Event Bubbling and Capturing",
+  "Event Delegation",
+  "Keyboard Events (keyup, keydown, keypress)",
+  "Form Events (submit, change, input, focus, blur)",
+  "Drag and Drop",
+  "Basic Form Validation",
+  "Regex-based Email & Phone Validation",
+  "Real-time Input Validation with Live Feedback",
+  "The Window Object",
+  "The Navigator Object",
+  "The Location Object",
+  "The History Object",
+  "The Screen Object",
+  "The Geolocation API",
+  "Timers: setTimeout vs setInterval",
+  "localStorage Basics",
+  "sessionStorage Basics",
+  "Cookies with JavaScript",
+  "Storing Objects (JSON) in localStorage",
+  "Array.map()",
+  "Array.filter()",
+  "Array.reduce()",
+  "Array.forEach() and .sort()",
+  "Array.find(), findIndex() and includes()",
+  "String Manipulation Methods",
+  "Object.keys(), values() and entries()",
+  "Object.assign() and Merging Objects",
+  "Arrow Functions & Template Literals",
+  "Destructuring (Array & Object)",
+  "Spread and Rest Operators",
+  "let/const and Block Scope",
+  "Default Function Parameters",
+  "Functions and Parameters",
+  "Closures Demonstration",
+  "Higher-Order Functions",
+  "Callback Functions",
+  "Promises Basics",
+  "Async/Await Basics",
+  "Fetch API - Get Data from a Public API",
+  "Promise Chaining",
+  "Try/Catch Error Handling",
+  "JSON.stringify() and JSON.parse()",
+  "Regular Expressions Basics"
+]
+};
+
+let category = "all";
+
+function setCategory(cat) {
+  category = cat;
+  document.querySelectorAll(".tab").forEach(b =>
+    b.classList.toggle("active", b.dataset.cat === cat)
+  );
+  render();
+}
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const content = document.getElementById("content");
+  const cats = category === "all" ? ["html","css","js"] : [category];
+
+  let output = "";
+  cats.forEach(cat => {
+    const filtered = programs[cat].map((title,i)=>({title,i}))
+      .filter(x => x.title.toLowerCase().includes(q));
+
+    if (!filtered.length) return;
+
+    const label = cat === "html" ? "HTML Programs" :
+                  cat === "css" ? "CSS Programs" : "JavaScript Programs";
+
+    output += `<section class="section">
+      <div class="section-title">
+        <h2>${label}</h2>
+        <span class="badge">${filtered.length} shown</span>
       </div>
-      <div class="exp-list" id="expList"></div>
-    </div>
+      <div class="programs">`;
 
-    <!-- Main Workspace -->
-    <div class="workspace">
-      <div class="workspace-header">
-        <h2 id="currentTitle">Select an experiment to start</h2>
-        <div class="view-modes">
-          <button class="view-btn active" id="btnSplit" onclick="setViewMode('split')">Split View</button>
-          <button class="view-btn" id="btnCode" onclick="setViewMode('code')">Code Only</button>
-          <button class="view-btn" id="btnPreview" onclick="setViewMode('preview')">Output Render</button>
-        </div>
-      </div>
-      <div class="content-container">
-        <div class="editor-pane" id="editorPane">
-          <textarea id="codeEditor" readonly spellcheck="false"></textarea>
-        </div>
-        <div class="preview-pane" id="previewPane">
-          <iframe id="previewFrame"></iframe>
-        </div>
-      </div>
-    </div>
-  </div>
+    filtered.forEach(x => {
+      output += `<article class="card" onclick="openProgram('${cat}',${x.i})">
+        <div class="card-number">Program ${x.i+1}</div>
+        <h3>${escapeHTML(x.title)}</h3>
+        <button onclick="event.stopPropagation();openProgram('${cat}',${x.i})">Open Program</button>
+      </article>`;
+    });
 
-  <script>
-    // Master Experiment Dataset generator
-    const experimentsData = {
-      html: [],
-      css: [],
-      js: [],
-      node: []
-    };
-
-    // Helper to generate template source codes dynamically
-    function generateHTMLCode(title) {
-      return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-    header, nav, section, article, footer { padding: 10px; margin: 5px 0; border: 1px solid #ccc; }
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-  </style>
-</head>
-<body>
-  <h2>${title}</h2>
-  <hr>
-  <p>This page demonstrates the implementation of: <strong>${title}</strong>.</p>
-  <div>
-    <button onclick="alert('Action triggered for ${title}')">Test Interactive Feature</button>
-  </div>
-</body>
-</html>`;
-    }
-
-    function generateCSSCode(title) {
-      return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f6f9; }
-    .box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .demo-element {
-      padding: 15px; margin: 10px 0; background: #e2e8f0; border-left: 4px solid #38bdf8;
-      transition: all 0.3s ease;
-    }
-    .demo-element:hover { background: #cbd5e1; }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h2>CSS Concept: ${title}</h2>
-    <div class="demo-element">
-      <p>Demonstration area for layout, style rules, or animations associated with <strong>${title}</strong>.</p>
-    </div>
-  </div>
-</body>
-</html>`;
-    }
-
-    function generateJSCode(title) {
-      return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <style>
-    body { font-family: monospace; padding: 20px; background: #1e1e2e; color: #a6adc8; }
-    .card { background: #181825; padding: 20px; border-radius: 8px; border: 1px solid #313244; }
-    button { background: #89b4fa; color: #11111b; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-    #output { margin-top: 15px; padding: 10px; background: #11111b; border-radius: 4px; color: #a6e3a1; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h3 style="color:#cdd6f4">${title}</h3>
-    <br>
-    <button onclick="runScript()">Run Functionality</button>
-    <div id="output">Output log ready...</div>
-  </div>
-
-  <script>
-    function runScript() {
-      const out = document.getElementById('output');
-      out.innerText = "Executing ${title} logic... Success!";
-    }
-  <\/script>
-</body>
-</html>`;
-    }
-
-    function generateNodeCode(title) {
-      return `// Node.js Backend Experiment
-// Module/Feature: ${title}
-
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-
-// Main Endpoint Implementation
-app.get('/', (req, res) => {
-  res.status(200).json({
-    status: "success",
-    experiment: "${title}",
-    timestamp: new Date().toISOString()
+    output += `</div></section>`;
   });
+
+  content.innerHTML = output || `<div class="empty">No program found.</div>`;
+}
+
+function escapeHTML(s) {
+  return s.replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function openProgram(cat, index) {
+  const title = programs[cat][index];
+  document.getElementById("modalTitle").textContent = title;
+
+  let demo = "";
+  if (cat === "html") demo = htmlDemo(title);
+  if (cat === "css") demo = cssDemo(title);
+  if (cat === "js") demo = jsDemo(title);
+
+  document.getElementById("modalBody").innerHTML =
+    `<p><strong>Category:</strong> ${cat.toUpperCase()}</p>
+     <p>This is a standalone demonstration of <strong>${escapeHTML(title)}</strong>.</p>
+     <div class="demo">${demo}</div>`;
+
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("show");
+}
+
+function closeOutside(e) {
+  if (e.target.id === "modal") closeModal();
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
 });
 
-app.listen(PORT, () => {
-  console.log(\`Server executing for: ${title} on port \${PORT}\`);
-});`;
-    }
+function htmlDemo(title) {
+  const t = title.toLowerCase();
 
-    // List datasets definition
-    const htmlTitles = [
-      "Basic HTML Webpage with Headings, Paragraphs, Line Breaks", "Lists: Ordered, Unordered, and Description Lists",
-      "Table with Rows, Columns, Borders, and Merged Cells", "Images and Hyperlinks", "Student Registration Form",
-      "Audio and Video Media Elements", "Frames and IFrames Implementation", "Semantic Elements (header, nav, section, footer)",
-      "HTML5 Special Input Types (email, date, number)", "College Timetable using HTML Table",
-      "Internal and External CSS Linking in HTML", "CSS Selectors, Colors, Margins, and Padding",
-      "Responsive Layout using CSS Media Queries", "Bootstrap Components Integration", "Simple Personal Portfolio Webpage"
-    ];
+  if (t.includes("table") || t.includes("timetable"))
+    return `<table style="width:100%;border-collapse:collapse">
+      <tr><th style="border:1px solid #94a3b8;padding:8px">Day</th><th style="border:1px solid #94a3b8;padding:8px">Subject</th></tr>
+      <tr><td style="border:1px solid #94a3b8;padding:8px">Monday</td><td style="border:1px solid #94a3b8;padding:8px">HTML</td></tr>
+      <tr><td style="border:1px solid #94a3b8;padding:8px">Tuesday</td><td style="border:1px solid #94a3b8;padding:8px">CSS</td></tr>
+    </table>`;
 
-    const cssTitles = [
-      "Inline, Internal, and External CSS Styling", "CSS Selectors (Class, ID, Grouping)", "Colors, Backgrounds, and Borders",
-      "Font Properties and Text Formatting", "CSS Box Model (Margin, Border, Padding)", "Sizing Properties (Width, Height, Max-Width)",
-      "CSS Positioning (Static, Relative, Absolute, Fixed, Sticky)", "Float and Clear Properties", "Styled Navigation Bar",
-      "Pseudo-classes (:hover, :active, :focus)", "Pseudo-elements (::before, ::after)", "CSS Lists and Table Styling",
-      "Styled Registration Form Layout", "CSS Flexbox Layouts", "CSS Grid Layouts", "Responsive Media Queries",
-      "CSS Transitions and Transformations", "CSS Keyframe Animations", "Responsive Mobile Navigation Menu",
-      "Personal Portfolio Layout", "College/Student Profile Dashboard", "Login Page Styling", "Product Card Component Layout",
-      "Responsive Photo Gallery Layout", "Complete Homepage Wireframe", "CSS Inheritance and Specificity Rules",
-      "Universal, Attribute, and Grouping Selectors", "Combinator Selectors (Descendant, Child, Sibling)", "CSS Custom Variables (--var)",
-      "Background Images and Positioning", "Linear and Radial CSS Gradients", "Box Shadows and Text Shadows",
-      "Border Radius and Custom Shapes", "Opacity and Transparency Techniques", "Overflow Properties (Hidden, Scroll, Auto)",
-      "Z-Index and Stacking Context", "Display Properties (Block, Inline, Flex, Grid)", "Visibility and Hiding Elements",
-      "Dropdown Navigation Menu", "Image Hover Effects and Zoom", "Pure CSS Tooltips", "CSS-Only Button Animations",
-      "CSS Filters (Blur, Grayscale, Contrast)", "Object-Fit and Object-Position", "Responsive Image Grid Gallery",
-      "Flexbox Card Layouts", "CSS Grid Dashboard Panel", "Two-Column Page Grid Layout", "Three-Column Flexbox Layout",
-      "Sticky Page Header", "Fixed Sidebar Layout", "Responsive Footer Layout", "Login and Signup Switcher Form",
-      "Responsive Contact Us Form", "College Portal Homepage Layout", "Restaurant Menu Layout", "E-Commerce Shopping Interface",
-      "Travel Agency Homepage", "News/Blog Layout with CSS Grid", "Multi-Section Portfolio Page", "CSS Grid Template Areas",
-      "Flexbox Alignment & Order Properties", "Responsive Grid with Media Queries", "Mobile-First Design Strategy",
-      "CSS Smooth Transitions", "2D and 3D Transformations", "Custom Keyframe Spinner Animations", "CSS Loading Spinner",
-      "Sliding Card Animation Interface", "CSS Pure Modal Popup", "Dark Mode Theme Switcher", "Responsive Typography",
-      "CSS Functions: clamp(), min(), max()", "CSS Calc() Practical Calculations", "Complete Responsive Web Application Page"
-    ];
+  if (t.includes("form"))
+    return `<form onsubmit="event.preventDefault();this.querySelector('.result').textContent='Form submitted successfully!'">
+      <input placeholder="Student Name" required><br>
+      <input type="email" placeholder="Email" required><br>
+      <input type="password" placeholder="Password" required><br>
+      <button type="submit">Submit</button><div class="result"></div>
+    </form>`;
 
-    const jsTitles = [];
-    // Populate 290 JS Titles
-    const jsBase = [
-      "Hello World Display", "Arithmetic Operations Calculator", "Largest of Three Numbers", "Even or Odd Checker",
-      "Positive, Negative, or Zero Check", "Factorial Calculator", "Fibonacci Series Generator", "Prime Number Checker",
-      "Palindrome Checker", "Reverse a Number", "Sum of Digits", "Array Max and Min Finder", "Array Sorting Algorithm",
-      "Array Sum and Average", "Function Expressions", "Arrow Functions", "String Manipulation Methods",
-      "Array Methods (map, filter, reduce)", "Object Literals & Methods", "Date and Math Object Utilities",
-      "Dynamic Text Changer", "Background Color Switcher", "Click Counter", "Show/Hide Element Toggle",
-      "Image Switcher", "Digital Clock Application", "Digital Calculator", "Number Guessing Game",
-      "Form Field Validator", "Full Form Validation (Name, Email, Phone)", "To-Do List Application",
-      "Quiz Application System", "Counter Application", "Stopwatch with Lap Function", "Countdown Timer",
-      "ES6 Let, Const, Template Literals", "Spread and Rest Operators", "JS Classes and Objects",
-      "Inheritance in ES6", "Callbacks, Promises, Async/Await", "Fetch API Integration", "Dynamic API Data Renderer",
-      "LocalStorage Data Persistence", "Interactive Login Form", "Full Web Application Page", "Swap Two Numbers",
-      "GCD of Two Numbers", "LCM of Two Numbers", "Armstrong Number Checker", "Perfect Number Checker",
-      "Multiplication Table Generator", "Power Calculator", "Digit Counter", "Second Largest Array Item",
-      "Remove Array Duplicates", "Merge Two Arrays", "Frequency of Array Elements", "Common Elements in Arrays",
-      "Reverse a String", "String Palindrome Check", "Count Vowels and Consonants", "Word Counter",
-      "Character Frequency Counter", "Regular Expression Basics", "Email Regex Validator",
-      "Dynamic DOM Node Insertion", "Dynamic DOM Node Removal", "Dynamic CSS Style Modification",
-      "Bulk Element Style Modifications", "getElementById vs querySelector", "querySelector & QuerySelectorAll",
-      "Dynamic CSS Class Manipulation", "Dynamic HTML Table Generator", "Add/Delete Table Rows", "Table Filter Search",
-      "Textarea Live Character Counter", "Password Show/Hide Toggle", "Dynamic Select Dropdown", "Dependent Dropdown",
-      "Image Carousel / Slideshow", "Mouse Events Listener", "Keyboard Events Listener", "Form Events (Focus, Blur)",
-      "Double Click Event Actions", "Event Bubbling & Capturing", "Event Delegation Pattern", "Keyboard Movement Control",
-      "Drag and Drop Interface", "Student Registration System", "Login Form Validation", "Password Strength Meter",
-      "Confirm Password Matcher", "Feedback Form Handler", "College Admission Form", "Dynamic Inline Errors",
-      "Window Object Explorer", "Navigator Object Info", "Location Object Redirects", "History Navigation Buttons",
-      "LocalStorage CRUD", "SessionStorage Temp Storage", "Shopping Cart with LocalStorage", "Dark Theme Toggle LocalStorage",
-      "Simple Expense Tracker", "Student Marks Grade Calculator", "Shopping Cart Logic", "Notes App with LocalStorage",
-      "Random Password Generator", "BMI Calculator", "Currency Converter API", "Interactive Portfolio Web Project"
-    ];
+  if (t.includes("image") || t.includes("multimedia"))
+    return `<img src="https://picsum.photos/700/250" alt="Demo image" style="max-width:100%;border-radius:10px">`;
 
-    for (let i = 0; i < 290; i++) {
-      const title = jsBase[i % jsBase.length] + ` (Variation #${i + 1})`;
-      jsTitles.push(title);
-    }
+  if (t.includes("list"))
+    return `<h3>HTML Lists</h3><ol><li>HTML</li><li>CSS</li><li>JavaScript</li></ol>
+            <ul><li>Frontend</li><li>Backend</li><li>Database</li></ul>`;
 
-    const nodeTitles = [];
-    const nodeBase = [
-      "Client-Server Architecture", "HTTP Server creation", "Request-Response Cycle", "Built-in Modules Overview",
-      "File System (fs) CRUD", "Path Module Utilities", "Custom Modules Export/Import", "NPM Package Management",
-      "Callbacks, Promises, Async/Await", "Error Handling Middlewares", "Express.js Core Setup", "GET & POST Route Handlers",
-      "Serving Static Files", "JSON Response Formatting", "Modular Express Architecture", "Express Routing Setup",
-      "Route & Query Parameters", "Express Router Instance", "404 Route Handler", "User/Product Routes",
-      "Custom Middleware Functions", "Request Logging Middleware", "Request Input Validation", "Authentication Middleware",
-      "Error Middleware Chain", "Middleware Execution Order", "Cookie Parsing & Creation", "Cookie Deletion Handler",
-      "Express Session Setup", "Session Login/Logout Logic", "Protected Session Routes", "Database Connectivity Setup",
-      "Table/Collection Schema Creation", "Database Insert Operations", "Database Read Operations", "Database Update Operations",
-      "Database Delete Operations", "Student Management CRUD API", "User Management CRUD API", "Product Management CRUD API",
-      "CRUD with Database Sync", "Input Sanitization for CRUD", "User Registration System", "User Authentication Route",
-      "Password Hashing with Bcrypt", "Password Verification Logic", "JWT Token Generation & Auth", "Protected JWT Routes",
-      "Role-Based Access Control (RBAC)", "Admin vs User Authorization", "Restricted Admin Routes", "Authorization Middleware",
-      "RESTful API Design", "Student REST API Complete"
-    ];
+  return `<h2>Hello HTML</h2><p>This is a working HTML demonstration.</p>
+          <button onclick="this.nextElementSibling.textContent='Button clicked!'">Click Me</button>
+          <div class="result"></div>`;
+}
 
-    for (let i = 0; i < 54; i++) {
-      nodeTitles.push(nodeBase[i % nodeBase.length] + ` - Module #${i + 1}`);
-    }
+function cssDemo(title) {
+  const t = title.toLowerCase();
 
-    // Populate Master Data Array
-    htmlTitles.forEach((t, i) => experimentsData.html.push({ id: `html-${i+1}`, title: t, code: generateHTMLCode(t) }));
-    cssTitles.forEach((t, i) => experimentsData.css.push({ id: `css-${i+1}`, title: t, code: generateCSSCode(t) }));
-    jsTitles.forEach((t, i) => experimentsData.js.push({ id: `js-${i+1}`, title: t, code: generateJSCode(t) }));
-    nodeTitles.forEach((t, i) => experimentsData.node.push({ id: `node-${i+1}`, title: t, code: generateNodeCode(t) }));
+  if (t.includes("gradient"))
+    return `<div style="height:180px;border-radius:15px;background:linear-gradient(135deg,#2563eb,#9333ea);display:grid;place-items:center;color:white;font-size:25px">Gradient Demo</div>`;
 
-    let currentCategory = 'html';
-    let currentExperimentIndex = 0;
+  if (t.includes("grid"))
+    return `<div class="demo-grid"><div class="demo-box">1</div><div class="demo-box">2</div><div class="demo-box">3</div></div>`;
 
-    function renderList() {
-      const container = document.getElementById('expList');
-      container.innerHTML = '';
-      const list = experimentsData[currentCategory];
+  if (t.includes("flex"))
+    return `<div style="display:flex;justify-content:space-around;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="demo-box">Flex 1</div><div class="demo-box">Flex 2</div><div class="demo-box">Flex 3</div></div>`;
 
-      list.forEach((item, index) => {
-        const el = document.createElement('div');
-        el.className = `exp-item ${index === currentExperimentIndex ? 'active' : ''}`;
-        el.onclick = () => loadExperiment(index);
-        el.innerHTML = `<span class="exp-num">#${index + 1}</span> <span>${item.title}</span>`;
-        container.appendChild(el);
-      });
-    }
+  if (t.includes("shadow"))
+    return `<div style="padding:40px;text-align:center;background:white;border-radius:15px;box-shadow:12px 12px 30px #64748b">Box Shadow Demo</div>`;
 
-    function switchCategory(cat) {
-      currentCategory = cat;
-      currentExperimentIndex = 0;
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-cat') === cat);
-      });
-      document.getElementById('searchInput').value = '';
-      renderList();
-      if (experimentsData[cat].length > 0) {
-        loadExperiment(0);
-      }
-    }
+  if (t.includes("animation") || t.includes("spinner"))
+    return `<div style="width:70px;height:70px;border:8px solid #cbd5e1;border-top-color:#2563eb;border-radius:50%;animation:spin 1s linear infinite"></div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
 
-    function loadExperiment(index) {
-      currentExperimentIndex = index;
-      const exp = experimentsData[currentCategory][index];
-      if (!exp) return;
+  return `<div style="padding:30px;border:3px solid #2563eb;border-radius:15px;background:#dbeafe;transition:.3s"
+    onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    <h2>CSS Concept</h2><p>Hover this box to see the CSS effect.</p></div>`;
+}
 
-      document.getElementById('currentTitle').innerText = exp.title;
-      document.getElementById('codeEditor').value = exp.code;
+function jsDemo(title) {
+  const t = title.toLowerCase();
 
-      const iframe = document.getElementById('previewFrame');
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+  if (t.includes("calculator"))
+    return `<input id="a" type="number" value="10"> <input id="b" type="number" value="5">
+      <button onclick="document.getElementById('calcResult').textContent=Number(a.value)+Number(b.value)">Add</button>
+      <div class="result" id="calcResult"></div>`;
 
-      iframeDoc.open();
-      if (currentCategory === 'node') {
-        iframeDoc.write(`<html><body style="background:#0f172a;color:#22c55e;font-family:monospace;padding:20px;">
-            <h3>[Node.js Runtime Simulator]</h3>
-            <p>File Executed: <strong>${exp.id}.js</strong></p>
-            <hr style="border-color:#22c55e;margin:10px 0;">
-            <pre style="white-space:pre-wrap;word-break:break-all;">${exp.code}</pre>
-        </body></html>`);
-      } else {
-        iframeDoc.write(exp.code);
-      }
-      iframeDoc.close();
+  if (t.includes("clock"))
+    return `<div id="clock" style="font-size:2rem;font-weight:bold"></div>
+      <script>(function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString();setTimeout(tick,1000)})();<\/script>`;
 
-      renderList();
-    }
+  if (t.includes("stopwatch"))
+    return `<div id="sw" style="font-size:2rem">0</div>
+      <button onclick="window.swTimer=setInterval(()=>sw.textContent=Number(sw.textContent)+1,1000)">Start</button>
+      <button onclick="clearInterval(window.swTimer)">Stop</button>
+      <button onclick="sw.textContent=0">Reset</button>`;
 
-    function setViewMode(mode) {
-      const editor = document.getElementById('editorPane');
-      const preview = document.getElementById('previewPane');
+  if (t.includes("countdown"))
+    return `<input id="seconds" type="number" value="10"><button onclick="startCountdown()">Start</button>
+      <div class="result" id="count"></div>
+      <script>function startCountdown(){let n=+seconds.value;clearInterval(window.cd);count.textContent=n;window.cd=setInterval(()=>{n--;count.textContent=n;if(n<=0)clearInterval(window.cd)},1000)}<\/script>`;
 
-      document.getElementById('btnSplit').classList.toggle('active', mode === 'split');
-      document.getElementById('btnCode').classList.toggle('active', mode === 'code');
-      document.getElementById('btnPreview').classList.toggle('active', mode === 'preview');
+  if (t.includes("to-do") || t.includes("todo"))
+    return `<input id="task" placeholder="Enter task"><button onclick="addTask()">Add</button><ul id="tasks"></ul>
+      <script>function addTask(){if(!task.value.trim())return;const li=document.createElement('li');li.textContent=task.value+' ';const b=document.createElement('button');b.textContent='Delete';b.onclick=()=>li.remove();li.appendChild(b);tasks.appendChild(li);task.value=''}<\/script>`;
 
-      if (mode === 'split') {
-        editor.style.display = 'flex';
-        preview.style.display = 'flex';
-      } else if (mode === 'code') {
-        editor.style.display = 'flex';
-        preview.style.display = 'none';
-      } else if (mode === 'preview') {
-        editor.style.display = 'none';
-        preview.style.display = 'flex';
-      }
-    }
+  if (t.includes("form") || t.includes("validation"))
+    return `<form onsubmit="event.preventDefault();document.getElementById('valid').textContent='Valid submission!'">
+      <input required placeholder="Name"><input required type="email" placeholder="Email">
+      <button>Validate</button></form><div class="result" id="valid"></div>`;
 
-    function filterExperiments() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const container = document.getElementById('expList');
-      const list = experimentsData[currentCategory];
+  if (t.includes("localstorage"))
+    return `<input id="store" placeholder="Value"><button onclick="localStorage.setItem('lab',store.value)">Save</button>
+      <button onclick="document.getElementById('stored').textContent=localStorage.getItem('lab')||'Nothing saved'">Load</button>
+      <div class="result" id="stored"></div>`;
 
-      container.innerHTML = '';
-      list.forEach((item, index) => {
-        if (item.title.toLowerCase().includes(q)) {
-          const el = document.createElement('div');
-          el.className = `exp-item ${index === currentExperimentIndex ? 'active' : ''}`;
-          el.onclick = () => loadExperiment(index);
-          el.innerHTML = `<span class="exp-num">#${index + 1}</span> <span>${item.title}</span>`;
-          container.appendChild(el);
-        }
-      });
-    }
+  if (t.includes("api") || t.includes("fetch"))
+    return `<button onclick="fetch('https://jsonplaceholder.typicode.com/todos/1').then(r=>r.json()).then(x=>document.getElementById('apiout').textContent=JSON.stringify(x,null,2)).catch(()=>apiout.textContent='API unavailable')">Fetch API</button>
+      <pre id="apiout"></pre>`;
 
-    // Initialize Page
-    switchCategory('html');
-  </script>
+  return `<button onclick="document.getElementById('jsout').textContent='JavaScript executed successfully!'">Run JavaScript</button>
+          <div class="result" id="jsout"></div>`;
+}
+
+render();
+</script>
 </body>
 </html>
