@@ -54,6 +54,24 @@ footer{margin-top:40px;padding:30px;text-align:center;color:var(--muted);border-
 .demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .demo-box{padding:20px;border-radius:10px;background:#dbeafe;border:2px solid #2563eb}
 pre{background:#0f172a;color:#93c5fd;padding:15px;border-radius:9px;overflow:auto}
+
+.output-title{font-size:1.05rem;font-weight:800;margin:18px 0 8px;color:#111827}
+.code-title{font-size:1.05rem;font-weight:800;margin:20px 0 8px;color:#111827}
+.code-block{position:relative}
+.code-block pre{margin:0;max-height:360px;font-size:13px;line-height:1.5;white-space:pre-wrap}
+.copy-code{margin-top:8px;background:#7c3aed!important}
+.portfolio{font-family:Segoe UI,Arial,sans-serif;background:#fff;color:#172033;border-radius:12px;overflow:hidden}
+.portfolio-hero{padding:34px 25px;text-align:center;background:linear-gradient(135deg,#172554,#7c3aed);color:white}
+.portfolio-hero h1{font-size:2.2rem;margin-bottom:8px}
+.portfolio-hero p{margin:6px 0;color:#e9d5ff}
+.portfolio-nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:12px;background:#111827}
+.portfolio-nav a{color:white;text-decoration:none}
+.portfolio-section{padding:24px}
+.portfolio-section h2{color:#4c1d95;margin-bottom:10px}
+.skill-list{display:flex;flex-wrap:wrap;gap:8px}
+.skill-list span{padding:7px 11px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-weight:700}
+.project-card{border:1px solid #d1d5db;border-radius:10px;padding:14px;margin-top:10px;background:#f8fafc}
+.portfolio-footer{text-align:center;padding:18px;background:#111827;color:#cbd5e1}
 @media(max-width:700px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .demo-grid{grid-template-columns:1fr}
@@ -331,14 +349,225 @@ function openProgram(cat, index) {
   if (cat === "css") demo = cssDemo(title);
   if (cat === "js") demo = jsDemo(title);
 
+  const sourceCode = getSourceCode(cat, title);
+
   document.getElementById("modalBody").innerHTML =
     `<p><strong>Category:</strong> ${cat.toUpperCase()}</p>
-     <p>This is a standalone demonstration of <strong>${escapeHTML(title)}</strong>.</p>
-     <div class="demo">${demo}</div>`;
+     <p><strong>Program:</strong> ${escapeHTML(title)}</p>
+     <div class="output-title">Live Output</div>
+     <div class="demo">${demo}</div>
+     <div class="code-title">Source Code</div>
+     <div class="code-block">
+       <pre id="sourceCode">${escapeHTML(sourceCode)}</pre>
+       <button class="copy-code" onclick="copySourceCode()">Copy Code</button>
+     </div>`;
 
   document.getElementById("modal").classList.add("show");
 }
 
+function copySourceCode() {
+  const code = document.getElementById("sourceCode").textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector(".copy-code");
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(() => btn.textContent = old, 1200);
+    }
+  });
+}
+
+function getSourceCode(cat, title) {
+  const t = title.toLowerCase();
+
+  if (cat === "html" && t === "my portfolio") {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdul Kalam - Portfolio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;line-height:1.6;color:#172033;background:#f4f7fb}
+nav{background:#111827;padding:15px;text-align:center}
+nav a{color:white;text-decoration:none;margin:0 12px}
+header{text-align:center;padding:60px 20px;color:white;background:linear-gradient(135deg,#172554,#7c3aed)}
+section{max-width:1000px;margin:25px auto;padding:25px;background:white;border-radius:12px}
+h2{color:#4c1d95;margin-bottom:10px}
+.skills{display:flex;flex-wrap:wrap;gap:10px}
+.skills span{padding:8px 12px;background:#ede9fe;color:#5b21b6;border-radius:20px}
+.project{margin-top:12px;padding:15px;border:1px solid #ddd;border-radius:10px}
+footer{text-align:center;padding:20px;color:white;background:#111827}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<header id="home">
+<h1>Hi, I'm Abdul Kalam</h1>
+<p>B.Tech Artificial Intelligence & Machine Learning Student</p>
+<p>Interested in AI, Full Stack Development and Software Engineering</p>
+</header>
+
+<section id="about">
+<h2>About Me</h2>
+<p>I am a B.Tech student at Sai University, Chennai,
+studying Artificial Intelligence and Machine Learning.
+I enjoy building software projects and learning new technologies.</p>
+</section>
+
+<section id="skills">
+<h2>My Skills</h2>
+<div class="skills">
+<span>Python</span><span>C</span><span>HTML</span>
+<span>CSS</span><span>JavaScript</span><span>DSA</span><span>AI / ML</span>
+</div>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<div class="project">
+<h3>Student Portfolio</h3>
+<p>A responsive personal portfolio using HTML and CSS.</p>
+</div>
+<div class="project">
+<h3>AI / ML Project</h3>
+<p>A machine-learning project using Python and data analysis.</p>
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<p>Email: your-email@example.com</p>
+<p>GitHub: github.com/yourusername</p>
+<p>LinkedIn: linkedin.com/in/yourusername</p>
+</section>
+
+<footer><p>&copy; 2026 Abdul Kalam. All Rights Reserved.</p></footer>
+</body>
+</html>`;
+  }
+
+  if (cat === "html" && t.includes("table"))
+    return `<!DOCTYPE html>
+<html><body>
+<h2>Class Timetable</h2>
+<table border="1" cellpadding="10">
+<tr><th>Day</th><th>Subject</th></tr>
+<tr><td>Monday</td><td>HTML</td></tr>
+<tr><td>Tuesday</td><td>CSS</td></tr>
+<tr><td>Wednesday</td><td>JavaScript</td></tr>
+</table>
+</body></html>`;
+
+  if (cat === "html" && t.includes("form"))
+    return `<!DOCTYPE html>
+<html><body>
+<h2>Registration Form</h2>
+<form>
+<label>Name:</label><input type="text" required><br><br>
+<label>Email:</label><input type="email" required><br><br>
+<label>Password:</label><input type="password" required><br><br>
+<button type="submit">Register</button>
+</form>
+</body></html>`;
+
+  if (cat === "css" && t.includes("gradient"))
+    return `<!DOCTYPE html>
+<html><head><style>
+.box{width:100%;height:180px;background:linear-gradient(135deg,#2563eb,#9333ea);color:white;display:grid;place-items:center;font-size:28px}
+</style></head><body>
+<div class="box">CSS Gradient Output</div>
+</body></html>`;
+
+  if (cat === "css" && t.includes("flex"))
+    return `<!DOCTYPE html>
+<html><head><style>
+.container{display:flex;gap:15px;justify-content:center}
+.box{padding:30px;background:#dbeafe;border:2px solid #2563eb}
+</style></head><body>
+<div class="container"><div class="box">Box 1</div><div class="box">Box 2</div><div class="box">Box 3</div></div>
+</body></html>`;
+
+  if (cat === "css" && t.includes("grid"))
+    return `<!DOCTYPE html>
+<html><head><style>
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item{padding:30px;text-align:center;background:#dbeafe;border:2px solid #2563eb}
+</style></head><body>
+<div class="grid"><div class="item">1</div><div class="item">2</div><div class="item">3</div></div>
+</body></html>`;
+
+  if (cat === "js" && t.includes("calculator"))
+    return `<!DOCTYPE html>
+<html><body>
+<h2>Calculator</h2>
+<input id="a" type="number" value="10">
+<input id="b" type="number" value="5">
+<button onclick="calculate()">Add</button>
+<h3 id="result"></h3>
+<script>
+function calculate(){
+const a=Number(document.getElementById("a").value);
+const b=Number(document.getElementById("b").value);
+document.getElementById("result").textContent="Result: "+(a+b);
+}
+</script>
+</body></html>`;
+
+  if (cat === "js" && t.includes("clock"))
+    return `<!DOCTYPE html>
+<html><body>
+<h2>Digital Clock</h2><h1 id="clock"></h1>
+<script>
+function updateClock(){
+document.getElementById("clock").textContent=new Date().toLocaleTimeString();
+}
+setInterval(updateClock,1000);
+updateClock();
+</script>
+</body></html>`;
+
+  if (cat === "js" && (t.includes("to-do") || t.includes("todo")))
+    return `<!DOCTYPE html>
+<html><body>
+<h2>To-Do List</h2>
+<input id="task" placeholder="Enter a task">
+<button onclick="addTask()">Add</button>
+<ul id="tasks"></ul>
+<script>
+function addTask(){
+const input=document.getElementById("task");
+if(input.value.trim()==="")return;
+const li=document.createElement("li");
+li.textContent=input.value+" ";
+const button=document.createElement("button");
+button.textContent="Delete";
+button.onclick=()=>li.remove();
+li.appendChild(button);
+document.getElementById("tasks").appendChild(li);
+input.value="";
+}
+</script>
+</body></html>`;
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>${title}</title></head>
+<body>
+<h2>${title}</h2>
+<p>This program demonstrates the ${cat.toUpperCase()} concept.</p>
+</body>
+</html>`;
+}
 function closeModal() {
   document.getElementById("modal").classList.remove("show");
 }
@@ -353,6 +582,41 @@ document.addEventListener("keydown", e => {
 
 function htmlDemo(title) {
   const t = title.toLowerCase();
+
+  if (t === "my portfolio") return `<div class="portfolio">
+    <div class="portfolio-hero">
+      <h1>Hi, I'm Abdul Kalam</h1>
+      <p>B.Tech Artificial Intelligence & Machine Learning Student</p>
+      <p>Interested in AI, Full Stack Development and Software Engineering</p>
+    </div>
+    <div class="portfolio-nav">
+      <a href="#p-about">About</a><a href="#p-skills">Skills</a>
+      <a href="#p-projects">Projects</a><a href="#p-contact">Contact</a>
+    </div>
+    <section class="portfolio-section" id="p-about">
+      <h2>About Me</h2>
+      <p>I am a B.Tech student at Sai University, Chennai, studying Artificial Intelligence and Machine Learning. I enjoy building software projects and learning new technologies.</p>
+    </section>
+    <section class="portfolio-section" id="p-skills">
+      <h2>My Skills</h2>
+      <div class="skill-list">
+        <span>Python</span><span>C</span><span>HTML</span><span>CSS</span>
+        <span>JavaScript</span><span>DSA</span><span>AI / ML</span>
+      </div>
+    </section>
+    <section class="portfolio-section" id="p-projects">
+      <h2>Projects</h2>
+      <div class="project-card"><h3>Student Portfolio</h3><p>A responsive personal portfolio using HTML and CSS.</p></div>
+      <div class="project-card"><h3>AI / ML Project</h3><p>A machine-learning project using Python and data analysis.</p></div>
+    </section>
+    <section class="portfolio-section" id="p-contact">
+      <h2>Contact</h2>
+      <p>Email: your-email@example.com</p>
+      <p>GitHub: github.com/yourusername</p>
+      <p>LinkedIn: linkedin.com/in/yourusername</p>
+    </section>
+    <div class="portfolio-footer">© 2026 Abdul Kalam • B.Tech AIML</div>
+  </div>`;
 
   if (t.includes("table") || t.includes("timetable"))
     return `<table style="width:100%;border-collapse:collapse">
